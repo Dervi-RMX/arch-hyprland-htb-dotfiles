@@ -39,15 +39,31 @@ case "$THEME" in
         ;;
 esac
 
-# 1. Cambiar Wallpaper al instante con awww
+# 1. Cambiar Wallpaper al instante (swaybg para imagenes estaticas, awww solo para GIFs)
 WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*.gif" | head -n 1)
 [ -z "${WALL_PATH:-}" ] && WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*" | head -n 1)
-if [ -n "${WALL_PATH:-}" ] && command -v awww >/dev/null 2>&1; then
-    pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon >/dev/null 2>&1 & sleep 0.3)
-    awww img "$WALL_PATH" --transition-type none &
+
+if [ -n "${WALL_PATH:-}" ]; then
+    # Limpiar procesos previos colgados de cambio de wallpaper
+    pkill -x "awww" 2>/dev/null || true
+
+    if [[ "${WALL_PATH,,}" == *.gif ]] && command -v awww >/dev/null 2>&1; then
+        pkill -x swaybg 2>/dev/null || true
+        pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon --format xrgb >/dev/null 2>&1 & sleep 0.2)
+        awww img "$WALL_PATH" --transition-type none --resize crop >/dev/null 2>&1 &
+    elif command -v swaybg >/dev/null 2>&1; then
+        pkill -x awww-daemon 2>/dev/null || true
+        OLD_SWAYBG=$(pgrep -x swaybg || true)
+        swaybg -i "$WALL_PATH" -m fill >/dev/null 2>&1 &
+        sleep 0.15
+        [ -n "$OLD_SWAYBG" ] && kill $OLD_SWAYBG 2>/dev/null || true
+    elif command -v awww >/dev/null 2>&1; then
+        pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon --format xrgb >/dev/null 2>&1 & sleep 0.2)
+        awww img "$WALL_PATH" --transition-type none >/dev/null 2>&1 &
+    fi
 fi
 
-# 2. Cambiar Cursor del mouse (Hyprland + XCursor + GTK3/4 + gsettings) y bordes al instante
+# 2. Cambiar Cursor del mouse y bordes al instante
 export HYPRLAND_INSTANCE_SIGNATURE="${HYPRLAND_INSTANCE_SIGNATURE:-$(ls -1t /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1)}"
 export XCURSOR_THEME="$CURSOR"
 export XCURSOR_SIZE=24
@@ -98,15 +114,15 @@ fi
 # 8. Recargar Waybar al instante
 pkill -SIGUSR2 waybar 2>/dev/null || (pkill -x waybar; waybar >/dev/null 2>&1 &)
 
-# 9. Sincronizar Spotify (tema TUI text) automaticamente al cambiar de entorno
+# 9. Sincronizar Spotify con baja prioridad (nice) para no frenar el cambio visual
 if command -v spicetify >/dev/null 2>&1; then
     (
-        spicetify config current_theme text color_scheme "$SCHEME" >/dev/null 2>&1 || true
-        spicetify apply -n >/dev/null 2>&1 || true
+        nice -n 19 spicetify config current_theme text color_scheme "$SCHEME" >/dev/null 2>&1 || true
+        nice -n 19 spicetify apply -n >/dev/null 2>&1 || true
         if pgrep -f "/opt/spotify/spotify" >/dev/null 2>&1; then
-            spicetify refresh -s >/dev/null 2>&1 || true
+            nice -n 19 spicetify refresh -s >/dev/null 2>&1 || true
         fi
     ) &
 fi
 
-command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | Spotify y UI sincronizados"
+command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | UI sincronizada"
