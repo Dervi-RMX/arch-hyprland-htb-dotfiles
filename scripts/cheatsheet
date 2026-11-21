@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+export WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v '\.lock' | head -n 1 | xargs -r basename)
+export HYPRLAND_INSTANCE_SIGNATURE=$(ls -1t /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1)
+
+pkill -x rofi 2>/dev/null || true
+
+SEL=$(cat << 'LIST' | rofi -dmenu -i -p "󰌌 Cheatsheet" -theme-str 'window {width: 62%;}'
+[SISTEMA]   Super + Shift + R    -> Recargar entorno (Waybar + Kitty)
+[SISTEMA]   Super + H / F1       -> Abrir este Cheatsheet interactivo
+[SISTEMA]   Super + W            -> Cambiar Wallpaper y Tema (Minato / Zenitsu / Kimetsu)
+[SISTEMA]   Super + Q            -> Cerrar ventana activa
+[SISTEMA]   Super + M            -> Cerrar sesión de Hyprland
+[APPS]      Super + Return       -> Abrir terminal Kitty
+[APPS]      Super + Space        -> Lanzador de aplicaciones (Rofi)
+[APPS]      Super + D            -> Abrir navegador web
+[APPS]      Super + E            -> Abrir explorador de archivos
+[APPS]      Super + N            -> Panel de notificaciones (SwayNC)
+[VENTANAS]  Super + V            -> Alternar ventana flotante / mosaico
+[VENTANAS]  Super + J            -> Cambiar división horizontal / vertical
+[VENTANAS]  Super + Flechas      -> Mover foco entre ventanas
+[VENTANAS]  Super + Shift+Flechas-> Intercambiar ventana de puesto
+[VENTANAS]  Super / Ctrl + Clic  -> Arrastrar ventana libremente
+[VENTANAS]  Super + Shift+Flechas-> Mover / intercambiar ventana de puesto
+[VENTANAS]  Super + Ctrl+Flechas -> Redimensionar ventana activa
+[VENTANAS]  Super + 1..5         -> Cambiar de escritorio (Workspace)
+[VENTANAS]  Super + Shift + 1..5 -> Mover ventana al escritorio 1..5
+[CAPTURA]   Super + Shift + S    -> Captura de área al portapapeles
+[CAPTURA]   Shift + Print        -> Captura pantalla completa en ~/Pictures/Screenshots
+[TERMINAL]  Ctrl + R             -> Buscar historial de comandos (FZF)
+[HTB]       settarget IP nombre  -> Fijar máquina objetivo en Waybar
+[HTB]       cleantarget          -> Limpiar máquina objetivo en Waybar
+LIST
+)
+
+case "$SEL" in
+    *"Recargar entorno"*) ~/.local/bin/reload-all ;;
+    *"Cambiar Wallpaper"*) ~/.local/bin/wallpaper-picker ;;
+    *"Abrir terminal Kitty"*) setsid -f kitty >/dev/null 2>&1 ;;
+    *"Lanzador de aplicaciones"*) rofi -show drun ;;
+    *"Abrir explorador"*) setsid -f thunar >/dev/null 2>&1 ;;
+    *"Panel de notificaciones"*) swaync-client -t -sw ;;
+    *"Limpiar máquina objetivo"*) ~/.local/bin/cleantarget ;;
+esac

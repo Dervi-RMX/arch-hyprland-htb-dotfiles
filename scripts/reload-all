@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+export WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v '\.lock' | head -n 1 | xargs -r basename)
+export HYPRLAND_INSTANCE_SIGNATURE=$(ls -1t /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1)
+
+hyprctl reload
+pkill -x waybar 2>/dev/null || true
+nohup waybar >/dev/null 2>&1 & disown

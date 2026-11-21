@@ -1,0 +1,18 @@
+format = """
+[╭─](fg:#38bdf8)[](fg:#0c4a6e)$os[](bg:#075985 fg:#0c4a6e)$directory[](bg:#134e4a fg:#075985)$character[](fg:#134e4a) """
+
+[os]
+disabled = false
+style = "bg:#0c4a6e fg:#7dd3fc bold"
+format = "[ $symbol ]($style)"
+[os.symbols]
+Arch = ""
+
+[directory]
+style = "bg:#075985 fg:#bae6fd bold"
+format = "[  $path ]($style)"
+truncation_length = 3
+
+[character]
+success_symbol = "[ ❯](bg:#134e4a fg:#2dd4bf bold)"
+error_symbol = "[ ✘](bg:#134e4a fg:#f87171 bold)"

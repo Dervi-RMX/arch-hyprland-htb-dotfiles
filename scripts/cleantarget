@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+mkdir -p "$HOME/.cache"
+: > "$HOME/.cache/htb-target"
+pkill -RTMIN+8 waybar 2>/dev/null || true
+echo "Target limpio."

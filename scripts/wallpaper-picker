@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v "\.lock" | head -n 1 | xargs -r basename)}"
+set -euo pipefail
+
+WALL_DIR="$HOME/Pictures/Wallpapers"
+mkdir -p "$WALL_DIR"
+
+CHOICE=$(printf "King\nMinato\nZenitsu\nDemon\nKimetsu\nGoku\n" | rofi -dmenu -i -p "Entorno")
+[ -z "${CHOICE:-}" ] && exit 0
+
+THEME=$(echo "$CHOICE" | tr '[:upper:]' '[:lower:]')
+SCHEME="$CHOICE"
+
+# Definir cursor Bibata y color de borde activo de Hyprland por entorno
+case "$THEME" in
+    king)
+        CURSOR="Bibata-Modern-Ice"
+        BORDER="rgba(89b4faee) rgba(b4befeee) 45deg"
+        ;;
+    minato)
+        CURSOR="Bibata-Modern-Classic"
+        BORDER="rgba(f9e2afee) rgba(fab387ee) 45deg"
+        ;;
+    zenitsu)
+        CURSOR="Bibata-Modern-Amber"
+        BORDER="rgba(f9e2afee) rgba(f38ba8ee) 45deg"
+        ;;
+    demon)
+        CURSOR="Bibata-Modern-Classic"
+        BORDER="rgba(f38ba8ee) rgba(eba0acee) 45deg"
+        ;;
+    kimetsu)
+        CURSOR="Bibata-Modern-Ice"
+        BORDER="rgba(94e2d5ee) rgba(a6e3a1ee) 45deg"
+        ;;
+    goku)
+        CURSOR="Bibata-Modern-Classic"
+        BORDER="rgba(38bdf8ee) rgba(7dd3fcee) 45deg"
+        ;;
+esac
+
+# 1. Cambiar Wallpaper al instante con awww
+WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*.gif" | head -n 1)
+[ -z "${WALL_PATH:-}" ] && WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*" | head -n 1)
+if [ -n "${WALL_PATH:-}" ] && command -v awww >/dev/null 2>&1; then
+    pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon >/dev/null 2>&1 & sleep 0.3)
+    awww img "$WALL_PATH" --transition-type none &
+fi
+
+# 2. Cambiar Cursor del mouse (Hyprland + XCursor + GTK3/4 + gsettings) y bordes al instante
+export HYPRLAND_INSTANCE_SIGNATURE="${HYPRLAND_INSTANCE_SIGNATURE:-$(ls -1t /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1)}"
+export XCURSOR_THEME="$CURSOR"
+export XCURSOR_SIZE=24
+
+mkdir -p "$HOME/.icons/default" "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+printf "[Icon Theme]\nInherits=%s\n" "$CURSOR" > "$HOME/.icons/default/index.theme"
+
+for gtk_ini in "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"; do
+    touch "$gtk_ini"
+    grep -q "^\[Settings\]" "$gtk_ini" || sed -i '1i [Settings]' "$gtk_ini"
+    if grep -q "^gtk-cursor-theme-name=" "$gtk_ini"; then
+        sed -i "s/^gtk-cursor-theme-name=.*/gtk-cursor-theme-name=$CURSOR/" "$gtk_ini"
+    else
+        echo "gtk-cursor-theme-name=$CURSOR" >> "$gtk_ini"
+    fi
+done
+
+if command -v hyprctl >/dev/null 2>&1; then
+    hyprctl setcursor "$CURSOR" 24 >/dev/null 2>&1 || true
+    hyprctl keyword env "XCURSOR_THEME,$CURSOR" >/dev/null 2>&1 || true
+    hyprctl keyword general:col.active_border "$BORDER" >/dev/null 2>&1 || true
+fi
+gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR" >/dev/null 2>&1 || true
+gsettings set org.gnome.desktop.interface cursor-size 24 >/dev/null 2>&1 || true
+
+# 3. Waybar (copiar tanto layout como archivo de colores)
+[ -f "$HOME/.config/waybar/colors-${THEME}.css" ] && cp -f "$HOME/.config/waybar/colors-${THEME}.css" "$HOME/.config/waybar/colors-wallust.css"
+[ -f "$HOME/.config/waybar/layout-${THEME}.css" ] && cp -f "$HOME/.config/waybar/layout-${THEME}.css" "$HOME/.config/waybar/style.css"
+
+# 4. Kitty (aplicar tema y recargar en vivo en todas las terminales)
+if [ -f "$HOME/.config/kitty/themes/${THEME}.conf" ]; then
+    cp -f "$HOME/.config/kitty/themes/${THEME}.conf" "$HOME/.config/kitty/current-theme.conf"
+    kill -SIGUSR1 $(pgrep -x kitty) 2>/dev/null || true
+fi
+
+# 5. Starship
+[ -f "$HOME/.config/starship-themes/${THEME}.toml" ] && cp -f "$HOME/.config/starship-themes/${THEME}.toml" "$HOME/.config/starship.toml"
+
+# 6. Rofi
+if [ -f "$HOME/.config/rofi/themes/${THEME}.rasi" ]; then
+    cp -f "$HOME/.config/rofi/themes/${THEME}.rasi" "$HOME/.config/rofi/current-theme.rasi"
+    cp -f "$HOME/.config/rofi/themes/${THEME}.rasi" "$HOME/.config/rofi/colors-wallust.rasi"
+fi
+
+# 7. Hyprlock
+[ -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" ] && cp -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" "$HOME/.config/hypr/hyprlock.conf"
+
+# 8. Recargar Waybar al instante
+pkill -SIGUSR2 waybar 2>/dev/null || (pkill -x waybar; waybar >/dev/null 2>&1 &)
+
+# 9. Sincronizar Spotify (tema TUI text) automaticamente al cambiar de entorno
+if command -v spicetify >/dev/null 2>&1; then
+    (
+        spicetify config current_theme text color_scheme "$SCHEME" >/dev/null 2>&1 || true
+        spicetify apply -n >/dev/null 2>&1 || true
+        if pgrep -f "/opt/spotify/spotify" >/dev/null 2>&1; then
+            spicetify refresh -s >/dev/null 2>&1 || true
+        fi
+    ) &
+fi
+
+command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | Spotify y UI sincronizados"

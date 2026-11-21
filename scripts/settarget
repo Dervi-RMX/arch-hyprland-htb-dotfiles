@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+if [ -z "$1" ]; then
+    echo "Uso: settarget <IP> [nombre_maquina]"
+    exit 1
+fi
+mkdir -p "$HOME/.cache"
+if [ -n "$2" ]; then
+    echo "$1 - $2" > "$HOME/.cache/htb-target"
+else
+    echo "$1" > "$HOME/.cache/htb-target"
+fi
+pkill -RTMIN+8 waybar 2>/dev/null || true
+echo "[+] Target fijado: $(cat "$HOME/.cache/htb-target")"

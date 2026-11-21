@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+export HYPRLAND_INSTANCE_SIGNATURE=$(ls -1t "/run/user/$(id -u)/hypr/" 2>/dev/null | head -n 1)
+
+if ! pgrep -f "/opt/spotify/spotify" >/dev/null 2>&1; then
+    spotify >/dev/null 2>&1 &
+    sleep 1.2
+fi
+
+hyprctl dispatch togglespecialworkspace spotify >/dev/null 2>&1

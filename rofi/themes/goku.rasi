@@ -1,0 +1,40 @@
+* {
+    bg:          #09090bF0;
+    bg-alt:      #18181bD9;
+    fg:          #f4f4f5;
+    fg-dim:      #fca5a5;
+    accent:      #dc2626;
+    accent-alt:  #7f1d1d;
+    background-color: transparent;
+    text-color:       @fg;
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+window {
+    background-color: @bg;
+    border:           2px;
+    border-color:     @accent;
+    border-radius:    8px;
+    padding:          16px;
+    width:            52%;
+}
+
+mainbox { children: [ inputbar, listview ]; spacing: 12px; }
+
+inputbar {
+    background-color: @bg-alt;
+    border:           1px;
+    border-color:     @accent;
+    border-radius:    6px;
+    padding:          10px 14px;
+    children:         [ prompt, entry ];
+    spacing:          10px;
+}
+
+prompt { text-color: @accent; font: "JetBrainsMono Nerd Font Bold 11"; }
+entry  { placeholder: "Buscar..."; placeholder-color: @fg-dim; text-color: @fg; }
+
+listview { lines: 8; columns: 1; spacing: 6px; fixed-height: false; }
+element { padding: 9px 12px; border-radius: 5px; }
+element selected { background-color: @accent; text-color: #ffffff; }
+element-text { text-color: inherit; }
