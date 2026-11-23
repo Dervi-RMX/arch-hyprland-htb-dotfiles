@@ -88,22 +88,26 @@ VMEOF
 fi
 
 # 7. Configurar pantalla de inicio SDDM (Cyberpunk / Astronaut) para el usuario actual
-if [ -d "$REPO_DIR/sddm/themes/sddm-astronaut-theme" ]; then
-    echo "[*] Configurando SDDM para $USER..."
-    sudo mkdir -p /usr/share/sddm/themes /etc/sddm.conf.d /usr/share/fonts/sddm-astronaut
+echo "[*] Configurando SDDM para $USER..."
+sudo mkdir -p /usr/share/sddm/themes /etc/sddm.conf.d /usr/share/fonts/sddm-astronaut
+
+if [ -f "$REPO_DIR/sddm/themes/sddm-astronaut-theme/Main.qml" ]; then
     sudo rm -rf /usr/share/sddm/themes/sddm-astronaut-theme
     sudo cp -rf "$REPO_DIR/sddm/themes/sddm-astronaut-theme" /usr/share/sddm/themes/
-
-    if [ -d "/usr/share/sddm/themes/sddm-astronaut-theme/Fonts" ]; then
-        sudo cp -rf /usr/share/sddm/themes/sddm-astronaut-theme/Fonts/* /usr/share/fonts/sddm-astronaut/ 2>/dev/null || true
-        sudo fc-cache -f >/dev/null 2>&1 || true
-    fi
-
-    sudo rm -f /etc/sddm.conf /etc/sddm.conf.d/*.conf
-    printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf >/dev/null
-    printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf.d/theme.conf >/dev/null
-    sudo find /usr/share/sddm/themes/sddm-astronaut-theme -maxdepth 2 -name "*.conf" -exec sed -i "s/^User=.*/User=$USER/g" {} + 2>/dev/null || true
+elif [ ! -f "/usr/share/sddm/themes/sddm-astronaut-theme/Main.qml" ]; then
+    sudo git clone --depth=1 https://github.com/Keyitdev/sddm-astronaut-theme.git /usr/share/sddm/themes/sddm-astronaut-theme
+    sudo rm -rf /usr/share/sddm/themes/sddm-astronaut-theme/.git
 fi
+
+if [ -d "/usr/share/sddm/themes/sddm-astronaut-theme/Fonts" ]; then
+    sudo cp -rf /usr/share/sddm/themes/sddm-astronaut-theme/Fonts/* /usr/share/fonts/sddm-astronaut/ 2>/dev/null || true
+    sudo fc-cache -f >/dev/null 2>&1 || true
+fi
+
+sudo rm -f /etc/sddm.conf /etc/sddm.conf.d/*.conf
+printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf >/dev/null
+printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf.d/theme.conf >/dev/null
+sudo find /usr/share/sddm/themes/sddm-astronaut-theme -maxdepth 2 -name "*.conf" -exec sed -i "s/^User=.*/User=$USER/g" {} + 2>/dev/null || true
 
 # 8. Habilitar servicios y Zsh
 sudo systemctl enable NetworkManager sddm 2>/dev/null || true
