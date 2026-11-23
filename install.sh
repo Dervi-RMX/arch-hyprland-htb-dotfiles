@@ -176,6 +176,11 @@ if [ -d /opt/spotify ] && command -v spicetify >/dev/null 2>&1; then
     sudo chmod a+wr /opt/spotify
     sudo chmod a+wr /opt/spotify/Apps -R
     mkdir -p "$HOME/.config/spotify"
-    [ -f "$HOME/.config/spotify/prefs" ] || touch "$HOME/.config/spotify/prefs"
-    spicetify backup apply 2>/dev/null || spicetify apply 2>/dev/null || true
+    if [ ! -s "$HOME/.config/spotify/prefs" ]; then
+        SPOT_VER=$(/opt/spotify/spotify --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+        printf 'app.last-launched-version="%s"\n' "${SPOT_VER:-1.2.50.335}" > "$HOME/.config/spotify/prefs"
+    fi
+    spicetify config spotify_path /opt/spotify/
+    spicetify config prefs_path "$HOME/.config/spotify/prefs"
+    spicetify backup apply || spicetify apply
 fi
