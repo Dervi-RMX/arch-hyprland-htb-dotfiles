@@ -127,3 +127,12 @@ fi
 if command -v firefox >/dev/null 2>&1; then
     xdg-settings set default-web-browser firefox.desktop 2>/dev/null || true
 fi
+
+# 11. Instalar temas de cursores dinamicos por entorno (Bibata / Capitaine)
+if [ -d "$REPO_DIR/icons" ] && [ "$(ls -A "$REPO_DIR/icons" 2>/dev/null)" ]; then
+    echo "[*] Instalando temas de cursores..."
+    mkdir -p "$HOME/.icons"
+    cp -rf "$REPO_DIR/icons/"* "$HOME/.icons/"
+    sudo cp -rf "$REPO_DIR/icons/"* /usr/share/icons/ 2>/dev/null || true
+    printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme" 2>/dev/null || mkdir -p "$HOME/.icons/default" && printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme"
+fi
