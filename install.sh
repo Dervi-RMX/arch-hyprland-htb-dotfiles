@@ -57,3 +57,19 @@ if [ -d "$DOTFILES_DIR/spicetify/Themes/text" ]; then
 fi
 
 echo "[+] Entorno instalado. Usa Super + W para elegir tema (King, Minato, Zenitsu, Demon, Kimetsu, Goku) y Super + Shift + L para bloquear."
+
+# --- Configurar SDDM con tema personalizado adaptado al usuario actual ---
+if [ -d "$REPO_DIR/sddm/themes" ]; then
+    echo "[*] Configurando pantalla de inicio SDDM para el usuario: $USER..."
+    sudo pacman -S --noconfirm --needed sddm qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg 2>/dev/null || true
+    sudo mkdir -p /usr/share/sddm/themes /etc/sddm.conf.d
+    sudo cp -rf "$REPO_DIR/sddm/themes/"* /usr/share/sddm/themes/
+
+    THEME_NAME=$(ls -1 "$REPO_DIR/sddm/themes" | head -n 1)
+    if [ -n "$THEME_NAME" ]; then
+        printf "[Theme]\nCurrent=%s\n\n[Autologin]\nUser=%s\n" "$THEME_NAME" "$USER" | sudo tee /etc/sddm.conf.d/theme.conf >/dev/null
+        # Reemplazar cualquier referencia fija al usuario anterior por el usuario actual en confs del tema
+        sudo find "/usr/share/sddm/themes/$THEME_NAME" -maxdepth 2 -name "*.conf" -exec sed -i "s/User=.*/User=$USER/g" {} + 2>/dev/null || true
+    fi
+    sudo systemctl enable sddm 2>/dev/null || true
+fi
