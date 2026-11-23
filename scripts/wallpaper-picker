@@ -11,7 +11,6 @@ CHOICE=$(printf "King\nMinato\nZenitsu\nDemon\nKimetsu\nGoku\n" | rofi -dmenu -i
 THEME=$(echo "$CHOICE" | tr '[:upper:]' '[:lower:]')
 SCHEME="$CHOICE"
 
-# Definir cursor Bibata y color de borde activo de Hyprland por entorno
 case "$THEME" in
     king)
         CURSOR="Bibata-Modern-Ice"
@@ -39,18 +38,23 @@ case "$THEME" in
         ;;
 esac
 
-# 1. Cambiar Wallpaper al instante (swaybg para imagenes estaticas, awww solo para GIFs)
+# 1. Cambiar Wallpaper (awww con espera de socket para GIFs animados, swaybg para estaticos)
 WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*.gif" | head -n 1)
 [ -z "${WALL_PATH:-}" ] && WALL_PATH=$(find "$WALL_DIR" -maxdepth 1 -type f -iname "*${THEME}*" | head -n 1)
 
 if [ -n "${WALL_PATH:-}" ]; then
-    # Limpiar procesos previos colgados de cambio de wallpaper
     pkill -x "awww" 2>/dev/null || true
 
     if [[ "${WALL_PATH,,}" == *.gif ]] && command -v awww >/dev/null 2>&1; then
         pkill -x swaybg 2>/dev/null || true
-        pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon --format xrgb >/dev/null 2>&1 & sleep 0.2)
-        awww img "$WALL_PATH" --transition-type none --resize crop >/dev/null 2>&1 &
+        if ! pgrep -x awww-daemon >/dev/null 2>&1; then
+            awww-daemon --format xrgb >/dev/null 2>&1 &
+            for _ in $(seq 1 20); do
+                awww query >/dev/null 2>&1 && break
+                sleep 0.1
+            done
+        fi
+        awww img "$WALL_PATH" --transition-type none --resize crop >/dev/null 2>&1
     elif command -v swaybg >/dev/null 2>&1; then
         pkill -x awww-daemon 2>/dev/null || true
         OLD_SWAYBG=$(pgrep -x swaybg || true)
@@ -58,12 +62,18 @@ if [ -n "${WALL_PATH:-}" ]; then
         sleep 0.15
         [ -n "$OLD_SWAYBG" ] && kill $OLD_SWAYBG 2>/dev/null || true
     elif command -v awww >/dev/null 2>&1; then
-        pgrep -x awww-daemon >/dev/null 2>&1 || (awww-daemon --format xrgb >/dev/null 2>&1 & sleep 0.2)
-        awww img "$WALL_PATH" --transition-type none >/dev/null 2>&1 &
+        if ! pgrep -x awww-daemon >/dev/null 2>&1; then
+            awww-daemon --format xrgb >/dev/null 2>&1 &
+            for _ in $(seq 1 20); do
+                awww query >/dev/null 2>&1 && break
+                sleep 0.1
+            done
+        fi
+        awww img "$WALL_PATH" --transition-type none >/dev/null 2>&1
     fi
 fi
 
-# 2. Cambiar Cursor del mouse y bordes al instante
+# 2. Cursor y bordes de Hyprland
 export HYPRLAND_INSTANCE_SIGNATURE="${HYPRLAND_INSTANCE_SIGNATURE:-$(ls -1t /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1)}"
 export XCURSOR_THEME="$CURSOR"
 export XCURSOR_SIZE=24
@@ -89,11 +99,11 @@ fi
 gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR" >/dev/null 2>&1 || true
 gsettings set org.gnome.desktop.interface cursor-size 24 >/dev/null 2>&1 || true
 
-# 3. Waybar (copiar tanto layout como archivo de colores)
+# 3. Waybar
 [ -f "$HOME/.config/waybar/colors-${THEME}.css" ] && cp -f "$HOME/.config/waybar/colors-${THEME}.css" "$HOME/.config/waybar/colors-wallust.css"
 [ -f "$HOME/.config/waybar/layout-${THEME}.css" ] && cp -f "$HOME/.config/waybar/layout-${THEME}.css" "$HOME/.config/waybar/style.css"
 
-# 4. Kitty (aplicar tema y recargar en vivo en todas las terminales)
+# 4. Kitty
 if [ -f "$HOME/.config/kitty/themes/${THEME}.conf" ]; then
     cp -f "$HOME/.config/kitty/themes/${THEME}.conf" "$HOME/.config/kitty/current-theme.conf"
     kill -SIGUSR1 $(pgrep -x kitty) 2>/dev/null || true
@@ -111,10 +121,10 @@ fi
 # 7. Hyprlock
 [ -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" ] && cp -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" "$HOME/.config/hypr/hyprlock.conf"
 
-# 8. Recargar Waybar al instante
+# 8. Recargar Waybar
 pkill -SIGUSR2 waybar 2>/dev/null || (pkill -x waybar; waybar >/dev/null 2>&1 &)
 
-# 9. Sincronizar Spotify con baja prioridad (nice) para no frenar el cambio visual
+# 9. Sincronizar Spotify
 if command -v spicetify >/dev/null 2>&1; then
     (
         nice -n 19 spicetify config current_theme text color_scheme "$SCHEME" >/dev/null 2>&1 || true
