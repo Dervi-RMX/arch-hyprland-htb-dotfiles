@@ -19,7 +19,7 @@ if command -v pacman >/dev/null 2>&1; then
         pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
         libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
-        openvpn networkmanager firefox xdg-utils \
+        openvpn networkmanager firefox xdg-utils spotify-launcher \
         sddm qt6-5compat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg
 fi
 
@@ -135,4 +135,13 @@ if [ -d "$REPO_DIR/icons" ] && [ "$(ls -A "$REPO_DIR/icons" 2>/dev/null)" ]; the
     cp -rf "$REPO_DIR/icons/"* "$HOME/.icons/"
     sudo cp -rf "$REPO_DIR/icons/"* /usr/share/icons/ 2>/dev/null || true
     printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme" 2>/dev/null || mkdir -p "$HOME/.icons/default" && printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme"
+fi
+
+# 12. Instalar configuracion y lanzador Wayland/GPU personalizado de Spotify
+if [ -d "$REPO_DIR/spotify" ]; then
+    echo "[*] Aplicando configuracion personalizada de Spotify..."
+    mkdir -p "$HOME/.local/share/applications" "$HOME/.config"
+    [ -f "$REPO_DIR/spotify/spotify.desktop" ] && cp -f "$REPO_DIR/spotify/spotify.desktop" "$HOME/.local/share/applications/spotify.desktop"
+    [ -f "$REPO_DIR/spotify/spotify-flags.conf" ] && cp -f "$REPO_DIR/spotify/spotify-flags.conf" "$HOME/.config/spotify-flags.conf"
+    update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
 fi
