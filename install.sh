@@ -19,7 +19,7 @@ if command -v pacman >/dev/null 2>&1; then
         pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
         libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
-        openvpn networkmanager \
+        openvpn networkmanager firefox xdg-utils \
         sddm qt6-5compat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg
 fi
 
@@ -106,4 +106,9 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber 2>/dev/null ||
 if command -v wpctl >/dev/null 2>&1; then
     wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 2>/dev/null || true
     wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.70 2>/dev/null || true
+fi
+
+# 10. Configurar navegador predeterminado (Firefox)
+if command -v firefox >/dev/null 2>&1; then
+    xdg-settings set default-web-browser firefox.desktop 2>/dev/null || true
 fi
