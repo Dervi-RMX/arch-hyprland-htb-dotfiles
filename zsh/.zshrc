@@ -26,7 +26,7 @@ cleartarget() {
   echo "[-] Target limpiado"
 }
 
-export PATH=$PATH:/home/dervi/.spicetify
+export PATH=$PATH:$HOME/.spicetify
 
 
 # --- Historial persistente + FZF (Ctrl+R) ---
