@@ -141,9 +141,9 @@ fi
 echo "[*] Instalando Spotify y configurando Spicetify..."
 if ! command -v spotify >/dev/null 2>&1; then
     if command -v yay >/dev/null 2>&1; then
-        yay -S --noconfirm --needed spotify spicetify-cli
+        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify spicetify-cli
     elif command -v paru >/dev/null 2>&1; then
-        paru -S --noconfirm --needed spotify spicetify-cli
+        paru -S --noconfirm --needed --skipreview spotify spicetify-cli
     else
         # Instalar yay temporalmente si el sistema no tiene AUR helper
         sudo pacman -S --noconfirm --needed base-devel git
@@ -151,13 +151,13 @@ if ! command -v spotify >/dev/null 2>&1; then
         git clone --depth=1 https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
         (cd /tmp/yay-bin && makepkg -si --noconfirm)
         rm -rf /tmp/yay-bin
-        yay -S --noconfirm --needed spotify spicetify-cli
+        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify spicetify-cli
     fi
 else
     if command -v yay >/dev/null 2>&1; then
-        yay -S --noconfirm --needed spicetify-cli
+        yay -S --noconfirm --needed --answerclean None --answerdiff None spicetify-cli
     elif command -v paru >/dev/null 2>&1; then
-        paru -S --noconfirm --needed spicetify-cli
+        paru -S --noconfirm --needed --skipreview spicetify-cli
     fi
 fi
 
