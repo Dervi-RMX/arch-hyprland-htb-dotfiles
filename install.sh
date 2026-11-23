@@ -34,6 +34,7 @@ cp -f "$DOTFILES_DIR/zsh/htb-functions.zsh" ~/.zsh/htb-functions.zsh 2>/dev/null
 # Deteccion automatica de VMware para renderizado estable en Kitty y Hyprlock
 if command -v systemd-detect-virt >/dev/null 2>&1 && [ "$(systemd-detect-virt 2>/dev/null)" = "vmware" ]; then
 command -v awww >/dev/null 2>&1 || sudo pacman -S --noconfirm --needed awww 2>/dev/null || true
+sudo pacman -S --noconfirm --needed zsh-autosuggestions zsh-syntax-highlighting 2>/dev/null || true
     echo "[*] Entorno VMware detectado: activando compatibilidad grafica (LIBGL_ALWAYS_SOFTWARE=1)..."
     grep -q "LIBGL_ALWAYS_SOFTWARE" ~/.config/hypr/hyprland.conf || sed -i '1i env = LIBGL_ALWAYS_SOFTWARE,1\nenv = WLR_NO_HARDWARE_CURSORS,1' ~/.config/hypr/hyprland.conf
 fi
