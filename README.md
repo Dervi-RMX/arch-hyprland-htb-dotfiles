@@ -24,4 +24,4 @@ cd arch-hyprland-htb-dotfiles
 ### Atajos adicionales
 | Atajo | Acción |
 | :--- | :--- |
-| `Ctrl + Alt + [1-9]` | Mover la ventana activa al escritorio (workspace) correspondiente y enfocarlo |
+| `Super + Shift + [1-9]` | Mover la ventana activa al escritorio (workspace) correspondiente y enfocarlo |
