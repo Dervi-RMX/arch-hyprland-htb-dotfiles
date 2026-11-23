@@ -23,7 +23,7 @@ SEL=$(cat << 'LIST' | rofi -dmenu -i -p "󰌌 Cheatsheet" -theme-str 'window {wi
 [VENTANAS]  Super + Ctrl+Flechas -> Redimensionar ventana activa
 [VENTANAS]  Super + 1..5         -> Cambiar de escritorio (Workspace)
 [VENTANAS]  Super + Shift + 1..9 -> Mover ventana al escritorio 1..9 y enfocarlo
-[CAPTURA]   Super + Shift + S    -> Captura de área al portapapeles
+[CAPTURA]   Super + Shift + S / Print -> Captura de área (portapapeles + ~/Pictures)
 [CAPTURA]   Shift + Print        -> Captura pantalla completa en ~/Pictures/Screenshots
 [TERMINAL]  Ctrl + R             -> Buscar historial de comandos (FZF)
 [HTB]       settarget IP nombre  -> Fijar máquina objetivo en Waybar

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+mkdir -p "$HOME/Pictures"
+FILE="$HOME/Pictures/captura_$(date +%Y%m%d_%H%M%S).png"
+
+if [ "$1" = "full" ]; then
+    grim "$FILE" && wl-copy < "$FILE"
+else
+    GEOM=$(slurp) || exit 0
+    grim -g "$GEOM" "$FILE" && wl-copy < "$FILE"
+fi
