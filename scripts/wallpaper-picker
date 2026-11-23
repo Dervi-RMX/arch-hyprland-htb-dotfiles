@@ -94,6 +94,10 @@ done
 if command -v hyprctl >/dev/null 2>&1; then
     hyprctl setcursor "$CURSOR" 24 >/dev/null 2>&1 || true
     hyprctl keyword env "XCURSOR_THEME,$CURSOR" >/dev/null 2>&1 || true
+    hyprctl keyword env "HYPRCURSOR_THEME,$CURSOR" >/dev/null 2>&1 || true
+    hyprctl keyword env "HYPRCURSOR_SIZE,24" >/dev/null 2>&1 || true
+    mkdir -p "$HOME/.icons/default"
+    printf "[Icon Theme]\nInherits=%s\n" "$CURSOR" > "$HOME/.icons/default/index.theme"
     hyprctl keyword general:col.active_border "$BORDER" >/dev/null 2>&1 || true
 fi
 gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR" >/dev/null 2>&1 || true
