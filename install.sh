@@ -19,7 +19,7 @@ if command -v pacman >/dev/null 2>&1; then
         pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
         libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
-        openvpn networkmanager firefox xdg-utils \
+        openvpn networkmanager firefox xdg-utils unzip \
         sddm qt6-5compat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg
 fi
 
@@ -156,7 +156,7 @@ fi
 
 export PATH="$HOME/.spicetify:$PATH"
 if ! command -v spicetify >/dev/null 2>&1; then
-    curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+    printf 'n\n' | curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 fi
 
 if [ -d "$REPO_DIR/spicetify" ]; then
