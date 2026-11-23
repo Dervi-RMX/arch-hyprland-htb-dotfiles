@@ -184,3 +184,13 @@ if [ -d /opt/spotify ] && command -v spicetify >/dev/null 2>&1; then
     spicetify config prefs_path "$HOME/.config/spotify/prefs"
     spicetify backup apply || spicetify apply
 fi
+
+# Instalar configuracion visual de notificaciones (dunst / swaync)
+if [ -d "$REPO_DIR/dunst" ]; then
+    mkdir -p "$HOME/.config/dunst"
+    cp -rf "$REPO_DIR/dunst/"* "$HOME/.config/dunst/"
+fi
+if [ -d "$REPO_DIR/swaync" ]; then
+    mkdir -p "$HOME/.config/swaync"
+    cp -rf "$REPO_DIR/swaync/"* "$HOME/.config/swaync/"
+fi
