@@ -19,7 +19,7 @@ if command -v pacman >/dev/null 2>&1; then
         pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
         libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
-        openvpn networkmanager firefox xdg-utils spotify-launcher \
+        openvpn networkmanager firefox xdg-utils \
         sddm qt6-5compat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg
 fi
 
@@ -137,11 +137,48 @@ if [ -d "$REPO_DIR/icons" ] && [ "$(ls -A "$REPO_DIR/icons" 2>/dev/null)" ]; the
     printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme" 2>/dev/null || mkdir -p "$HOME/.icons/default" && printf "[Icon Theme]\nInherits=Bibata-Modern-Amber\n" > "$HOME/.icons/default/index.theme"
 fi
 
-# 12. Instalar configuracion y lanzador Wayland/GPU personalizado de Spotify
+# 12. Instalar Spotify (AUR / /opt/spotify) y aplicar tema personalizado de Spicetify
+echo "[*] Instalando Spotify y configurando Spicetify..."
+if ! command -v spotify >/dev/null 2>&1; then
+    if command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm --needed spotify spicetify-cli
+    elif command -v paru >/dev/null 2>&1; then
+        paru -S --noconfirm --needed spotify spicetify-cli
+    else
+        # Instalar yay temporalmente si el sistema no tiene AUR helper
+        sudo pacman -S --noconfirm --needed base-devel git
+        rm -rf /tmp/yay-bin
+        git clone --depth=1 https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+        (cd /tmp/yay-bin && makepkg -si --noconfirm)
+        rm -rf /tmp/yay-bin
+        yay -S --noconfirm --needed spotify spicetify-cli
+    fi
+else
+    if command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm --needed spicetify-cli
+    elif command -v paru >/dev/null 2>&1; then
+        paru -S --noconfirm --needed spicetify-cli
+    fi
+fi
+
+if [ -d "$REPO_DIR/spicetify" ]; then
+    mkdir -p "$HOME/.config/spicetify"
+    cp -rf "$REPO_DIR/spicetify/"* "$HOME/.config/spicetify/"
+    sed -i "s|__USER_HOME__|$HOME|g" "$HOME/.config/spicetify/config-xpui.ini" 2>/dev/null || true
+fi
+
 if [ -d "$REPO_DIR/spotify" ]; then
-    echo "[*] Aplicando configuracion personalizada de Spotify..."
     mkdir -p "$HOME/.local/share/applications" "$HOME/.config"
     [ -f "$REPO_DIR/spotify/spotify.desktop" ] && cp -f "$REPO_DIR/spotify/spotify.desktop" "$HOME/.local/share/applications/spotify.desktop"
     [ -f "$REPO_DIR/spotify/spotify-flags.conf" ] && cp -f "$REPO_DIR/spotify/spotify-flags.conf" "$HOME/.config/spotify-flags.conf"
     update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+fi
+
+if [ -d /opt/spotify ] && command -v spicetify >/dev/null 2>&1; then
+    sudo chmod a+wr /opt/spotify
+    sudo chmod a+wr /opt/spotify/Apps -R
+    # Generar prefs inicial si Spotify nunca se ha abierto en esta maquina
+    mkdir -p "$HOME/.config/spotify"
+    [ -f "$HOME/.config/spotify/prefs" ] || touch "$HOME/.config/spotify/prefs"
+    spicetify backup apply 2>/dev/null || spicetify apply 2>/dev/null || true
 fi
