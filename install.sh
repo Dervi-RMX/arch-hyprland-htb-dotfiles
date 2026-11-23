@@ -64,13 +64,26 @@ if [ -f "$HOME/.config/rofi/themes/${DEFAULT_THEME}.rasi" ]; then
 fi
 [ -f "$HOME/.config/hypr/hyprlock-themes/${DEFAULT_THEME}.conf" ] && cp -f "$HOME/.config/hypr/hyprlock-themes/${DEFAULT_THEME}.conf" "$HOME/.config/hypr/hyprlock.conf"
 
-# 6. Compatibilidad grafica automatica en VM
+# 6. Compatibilidad grafica y optimizacion automatica de fluidez en VM
 if systemd-detect-virt -q 2>/dev/null; then
+    echo "[*] Maquina virtual detectada: optimizando rendimiento grafico..."
     sudo pacman -S --noconfirm --needed open-vm-tools mesa seatd 2>/dev/null || true
     sudo systemctl enable --now vmtoolsd vmware-vmblock-fuse seatd 2>/dev/null || true
     sudo usermod -aG seat,video,input "$USER" 2>/dev/null || true
-    if [ -f "$HOME/.config/hypr/hyprland.conf" ] && ! grep -q "LIBGL_ALWAYS_SOFTWARE" "$HOME/.config/hypr/hyprland.conf"; then
-        printf "\nenv = LIBGL_ALWAYS_SOFTWARE,1\nenv = WLR_NO_HARDWARE_CURSORS,1\nenv = WLR_RENDERER_ALLOW_SOFTWARE,1\n" >> "$HOME/.config/hypr/hyprland.conf"
+    if [ -f "$HOME/.config/hypr/hyprland.conf" ] && ! grep -q "Optimizacion automatica VM" "$HOME/.config/hypr/hyprland.conf"; then
+        cat << 'VMEOF' >> "$HOME/.config/hypr/hyprland.conf"
+
+# --- Optimizacion automatica VM (fluidez y bajo consumo de CPU) ---
+env = WLR_NO_HARDWARE_CURSORS,1
+env = WLR_RENDERER_ALLOW_SOFTWARE,1
+decoration:blur:enabled = false
+decoration:shadow:enabled = false
+misc:vfr = true
+VMEOF
+        # Usar renderizado por CPU solo si no hay aceleracion 3D por hardware
+        if [ ! -e /dev/dri/renderD128 ]; then
+            echo "env = LIBGL_ALWAYS_SOFTWARE,1" >> "$HOME/.config/hypr/hyprland.conf"
+        fi
     fi
 fi
 
