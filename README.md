@@ -20,3 +20,8 @@ git clone https://github.com/TU_USUARIO/arch-hyprland-htb-dotfiles.git
 cd arch-hyprland-htb-dotfiles
 ./install.sh
 ```
+
+### Atajos adicionales
+| Atajo | Acción |
+| :--- | :--- |
+| `Ctrl + Alt + [1-9]` | Mover la ventana activa al escritorio (workspace) correspondiente y enfocarlo |
