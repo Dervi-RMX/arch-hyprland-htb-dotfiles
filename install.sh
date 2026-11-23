@@ -16,7 +16,7 @@ if command -v pacman >/dev/null 2>&1; then
         git base-devel hyprland waybar kitty rofi-wayland swaybg awww \
         hyprlock swaylock starship fastfetch zsh zsh-autosuggestions zsh-syntax-highlighting yazi \
         grim slurp wl-clipboard libnotify dunst \
-        pipewire wireplumber pavucontrol \
+        pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
         libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
         openvpn networkmanager \
@@ -99,3 +99,11 @@ if [ "$SHELL" != "/usr/bin/zsh" ] && command -v zsh >/dev/null 2>&1; then
 fi
 
 echo "[+] Instalacion completada para $USER. Ejecuta: sudo reboot"
+
+# 9. Activar servidor de audio PipeWire y volumen inicial automatico (70%)
+echo "[*] Habilitando audio PipeWire y volumen automatico..."
+systemctl --user enable --now pipewire pipewire-pulse wireplumber 2>/dev/null || true
+if command -v wpctl >/dev/null 2>&1; then
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 2>/dev/null || true
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.70 2>/dev/null || true
+fi
