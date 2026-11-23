@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [ -z "$WAYLAND_DISPLAY" ]; then
+    export WAYLAND_DISPLAY=$(ls -1 "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n1 | xargs -n1 basename)
+fi
+
 mkdir -p "$HOME/Pictures"
 FILE="$HOME/Pictures/captura_$(date +%Y%m%d_%H%M%S).png"
 
