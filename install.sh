@@ -76,8 +76,6 @@ if systemd-detect-virt -q 2>/dev/null; then
 # --- Optimizacion automatica VM (fluidez y bajo consumo de CPU) ---
 env = WLR_NO_HARDWARE_CURSORS,1
 env = WLR_RENDERER_ALLOW_SOFTWARE,1
-decoration:blur:enabled = false
-decoration:shadow:enabled = false
 misc:vfr = true
 VMEOF
         # Usar renderizado por CPU solo si no hay aceleracion 3D por hardware
