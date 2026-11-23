@@ -18,12 +18,11 @@ SEL=$(cat << 'LIST' | rofi -dmenu -i -p "󰌌 Cheatsheet" -theme-str 'window {wi
 [VENTANAS]  Super + V            -> Alternar ventana flotante / mosaico
 [VENTANAS]  Super + J            -> Cambiar división horizontal / vertical
 [VENTANAS]  Super + Flechas      -> Mover foco entre ventanas
-[VENTANAS]  Super + Shift+Flechas-> Intercambiar ventana de puesto
 [VENTANAS]  Super / Ctrl + Clic  -> Arrastrar ventana libremente
 [VENTANAS]  Super + Shift+Flechas-> Mover / intercambiar ventana de puesto
 [VENTANAS]  Super + Ctrl+Flechas -> Redimensionar ventana activa
 [VENTANAS]  Super + 1..5         -> Cambiar de escritorio (Workspace)
-[VENTANAS]  Super + Shift + 1..5 -> Mover ventana al escritorio 1..5
+[VENTANAS]  Super + Shift + 1..9 -> Mover ventana al escritorio 1..9 y enfocarlo
 [CAPTURA]   Super + Shift + S    -> Captura de área al portapapeles
 [CAPTURA]   Shift + Print        -> Captura pantalla completa en ~/Pictures/Screenshots
 [TERMINAL]  Ctrl + R             -> Buscar historial de comandos (FZF)
