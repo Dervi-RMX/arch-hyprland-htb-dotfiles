@@ -141,24 +141,22 @@ fi
 echo "[*] Instalando Spotify y configurando Spicetify..."
 if ! command -v spotify >/dev/null 2>&1; then
     if command -v yay >/dev/null 2>&1; then
-        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify spicetify-cli
+        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify
     elif command -v paru >/dev/null 2>&1; then
-        paru -S --noconfirm --needed --skipreview spotify spicetify-cli
+        paru -S --noconfirm --needed --skipreview spotify
     else
-        # Instalar yay temporalmente si el sistema no tiene AUR helper
         sudo pacman -S --noconfirm --needed base-devel git
         rm -rf /tmp/yay-bin
         git clone --depth=1 https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
         (cd /tmp/yay-bin && makepkg -si --noconfirm)
         rm -rf /tmp/yay-bin
-        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify spicetify-cli
+        yay -S --noconfirm --needed --answerclean None --answerdiff None spotify
     fi
-else
-    if command -v yay >/dev/null 2>&1; then
-        yay -S --noconfirm --needed --answerclean None --answerdiff None spicetify-cli
-    elif command -v paru >/dev/null 2>&1; then
-        paru -S --noconfirm --needed --skipreview spicetify-cli
-    fi
+fi
+
+export PATH="$HOME/.spicetify:$PATH"
+if ! command -v spicetify >/dev/null 2>&1; then
+    curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 fi
 
 if [ -d "$REPO_DIR/spicetify" ]; then
@@ -177,7 +175,6 @@ fi
 if [ -d /opt/spotify ] && command -v spicetify >/dev/null 2>&1; then
     sudo chmod a+wr /opt/spotify
     sudo chmod a+wr /opt/spotify/Apps -R
-    # Generar prefs inicial si Spotify nunca se ha abierto en esta maquina
     mkdir -p "$HOME/.config/spotify"
     [ -f "$HOME/.config/spotify/prefs" ] || touch "$HOME/.config/spotify/prefs"
     spicetify backup apply 2>/dev/null || spicetify apply 2>/dev/null || true
