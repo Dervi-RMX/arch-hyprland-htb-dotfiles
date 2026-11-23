@@ -139,4 +139,4 @@ if command -v spicetify >/dev/null 2>&1; then
     ) &
 fi
 
-command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | UI sincronizada"
+# command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | UI sincronizada"
