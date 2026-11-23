@@ -1,68 +1,82 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "[*] Creando directorios en ~/.config y ~/.local/bin..."
-mkdir -p ~/.config/{hypr/configs,hypr/conf,hypr/hyprlock-themes,waybar/scripts,kitty/themes,rofi/themes,starship-themes,swaylock-themes,swaylock,fastfetch}
-mkdir -p ~/.local/bin ~/Pictures/Wallpapers ~/.zsh
+echo "============================================================"
+echo "  Instalador Automatico: Arch Linux + Hyprland HTB Dotfiles"
+echo "  Usuario destino: $USER"
+echo "============================================================"
 
-echo "[*] Sincronizando configuraciones portables..."
-cp -rf "$DOTFILES_DIR/hypr/"* ~/.config/hypr/
-cp -rf "$DOTFILES_DIR/waybar/"* ~/.config/waybar/
-chmod +x ~/.config/waybar/scripts/*.sh 2>/dev/null || true
-
-cp -f "$DOTFILES_DIR/kitty/kitty.conf" ~/.config/kitty/
-cp -f "$DOTFILES_DIR/kitty/current-theme.conf" ~/.config/kitty/ 2>/dev/null || true
-cp -f "$DOTFILES_DIR/kitty/themes/"*.conf ~/.config/kitty/themes/
-
-cp -f "$DOTFILES_DIR/rofi/config.rasi" ~/.config/rofi/ 2>/dev/null || true
-cp -f "$DOTFILES_DIR/rofi/current-theme.rasi" ~/.config/rofi/ 2>/dev/null || true
-cp -f "$DOTFILES_DIR/rofi/colors-wallust.rasi" ~/.config/rofi/ 2>/dev/null || true
-cp -f "$DOTFILES_DIR/rofi/themes/"*.rasi ~/.config/rofi/themes/
-
-cp -f "$DOTFILES_DIR/starship/"*.toml ~/.config/starship-themes/
-cp -f "$DOTFILES_DIR/starship/starship.toml" ~/.config/starship.toml
-
-cp -f "$DOTFILES_DIR/swaylock-themes/"*.conf ~/.config/swaylock-themes/
-cp -f "$DOTFILES_DIR/swaylock-themes/king.conf" ~/.config/swaylock/config
-
-cp -rf "$DOTFILES_DIR/fastfetch/"* ~/.config/fastfetch/ 2>/dev/null || true
-cp -f "$DOTFILES_DIR/zsh/.zshrc" ~/.zshrc 2>/dev/null || true
-cp -f "$DOTFILES_DIR/zsh/htb-functions.zsh" ~/.zsh/htb-functions.zsh 2>/dev/null || true
-
-# Deteccion automatica de VMware para renderizado estable en Kitty y Hyprlock
-if command -v systemd-detect-virt >/dev/null 2>&1 && [ "$(systemd-detect-virt 2>/dev/null)" = "vmware" ]; then
-command -v awww >/dev/null 2>&1 || sudo pacman -S --noconfirm --needed awww 2>/dev/null || true
-sudo pacman -S --noconfirm --needed zsh-autosuggestions zsh-syntax-highlighting 2>/dev/null || true
-    echo "[*] Entorno VMware detectado: activando compatibilidad grafica (LIBGL_ALWAYS_SOFTWARE=1)..."
-    grep -q "LIBGL_ALWAYS_SOFTWARE" ~/.config/hypr/hyprland.conf || sed -i '1i env = LIBGL_ALWAYS_SOFTWARE,1\nenv = WLR_NO_HARDWARE_CURSORS,1' ~/.config/hypr/hyprland.conf
+# 1. Instalar dependencias del entorno, temas, plugins Zsh y SDDM
+if command -v pacman >/dev/null 2>&1; then
+    echo "[*] Instalando paquetes..."
+    sudo pacman -Syu --noconfirm
+    sudo pacman -S --noconfirm --needed \
+        git base-devel hyprland waybar kitty rofi-wayland swaybg awww \
+        hyprlock swaylock starship fastfetch zsh zsh-autosuggestions zsh-syntax-highlighting yazi \
+        grim slurp wl-clipboard libnotify dunst \
+        pipewire wireplumber pavucontrol \
+        ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
+        libayatana-appindicator polkit-gnome xdg-desktop-portal-hyprland \
+        openvpn networkmanager \
+        sddm qt6-5compat qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg
 fi
 
-echo "[*] Instalando scripts y wallpapers..."
-cp -f "$DOTFILES_DIR/scripts/"* ~/.local/bin/
-chmod +x ~/.local/bin/*
-cp -f "$DOTFILES_DIR/assets/wallpapers/"* ~/Pictures/Wallpapers/ 2>/dev/null || true
+# 2. Crear directorios del usuario
+mkdir -p \
+    "$HOME/.config/hypr" \
+    "$HOME/.config/waybar" \
+    "$HOME/.config/kitty" \
+    "$HOME/.config/rofi" \
+    "$HOME/.config/fastfetch" \
+    "$HOME/.config/starship-themes" \
+    "$HOME/.local/bin" \
+    "$HOME/Pictures/Wallpapers"
 
-# Configurar Spotify (Wayland flags + tema TUI text sincronizado)
-cp -f "$DOTFILES_DIR/spotify/spotify-flags.conf" ~/.config/spotify-flags.conf 2>/dev/null || true
-if [ -d "$DOTFILES_DIR/spicetify/Themes/text" ]; then
-    mkdir -p ~/.config/spicetify/Themes ~/.config/spicetify/Extensions
-    cp -rf "$DOTFILES_DIR/spicetify/Themes/text" ~/.config/spicetify/Themes/
-    cp -rf "$DOTFILES_DIR/spicetify/Extensions/"* ~/.config/spicetify/Extensions/ 2>/dev/null || true
-    if command -v spicetify >/dev/null 2>&1; then
-        spicetify config current_theme text color_scheme King extensions tui-visualizer.js >/dev/null 2>&1 || true
-        spicetify backup apply >/dev/null 2>&1 || true
+# 3. Copiar configuraciones de escritorio y terminal
+[ -d "$REPO_DIR/hypr" ] && cp -rf "$REPO_DIR/hypr/"* "$HOME/.config/hypr/"
+[ -d "$REPO_DIR/waybar" ] && cp -rf "$REPO_DIR/waybar/"* "$HOME/.config/waybar/"
+[ -d "$REPO_DIR/kitty" ] && cp -rf "$REPO_DIR/kitty/"* "$HOME/.config/kitty/"
+[ -d "$REPO_DIR/rofi" ] && cp -rf "$REPO_DIR/rofi/"* "$HOME/.config/rofi/"
+[ -d "$REPO_DIR/fastfetch" ] && cp -rf "$REPO_DIR/fastfetch/"* "$HOME/.config/fastfetch/"
+[ -d "$REPO_DIR/starship" ] && cp -rf "$REPO_DIR/starship/"* "$HOME/.config/starship-themes/"
+[ -d "$REPO_DIR/swaylock-themes" ] && cp -rf "$REPO_DIR/swaylock-themes" "$HOME/.config/"
+[ -f "$REPO_DIR/zsh/.zshrc" ] && cp -f "$REPO_DIR/zsh/.zshrc" "$HOME/.zshrc"
+
+# 4. Instalar scripts y wallpapers
+if [ -d "$REPO_DIR/scripts" ]; then
+    cp -rf "$REPO_DIR/scripts/"* "$HOME/.local/bin/"
+    chmod +x "$HOME/.local/bin/"*
+fi
+[ -d "$REPO_DIR/assets/wallpapers" ] && cp -rf "$REPO_DIR/assets/wallpapers/"* "$HOME/Pictures/Wallpapers/"
+[ -d "$REPO_DIR/wallpapers" ] && cp -rf "$REPO_DIR/wallpapers/"* "$HOME/Pictures/Wallpapers/"
+
+# 5. Activar tema inicial (Goku)
+DEFAULT_THEME="goku"
+[ -f "$HOME/.config/waybar/colors-${DEFAULT_THEME}.css" ] && cp -f "$HOME/.config/waybar/colors-${DEFAULT_THEME}.css" "$HOME/.config/waybar/colors-wallust.css"
+[ -f "$HOME/.config/waybar/layout-${DEFAULT_THEME}.css" ] && cp -f "$HOME/.config/waybar/layout-${DEFAULT_THEME}.css" "$HOME/.config/waybar/style.css"
+[ -f "$HOME/.config/kitty/themes/${DEFAULT_THEME}.conf" ] && cp -f "$HOME/.config/kitty/themes/${DEFAULT_THEME}.conf" "$HOME/.config/kitty/current-theme.conf"
+[ -f "$HOME/.config/starship-themes/${DEFAULT_THEME}.toml" ] && cp -f "$HOME/.config/starship-themes/${DEFAULT_THEME}.toml" "$HOME/.config/starship.toml"
+if [ -f "$HOME/.config/rofi/themes/${DEFAULT_THEME}.rasi" ]; then
+    cp -f "$HOME/.config/rofi/themes/${DEFAULT_THEME}.rasi" "$HOME/.config/rofi/current-theme.rasi"
+    cp -f "$HOME/.config/rofi/themes/${DEFAULT_THEME}.rasi" "$HOME/.config/rofi/colors-wallust.rasi"
+fi
+[ -f "$HOME/.config/hypr/hyprlock-themes/${DEFAULT_THEME}.conf" ] && cp -f "$HOME/.config/hypr/hyprlock-themes/${DEFAULT_THEME}.conf" "$HOME/.config/hypr/hyprlock.conf"
+
+# 6. Compatibilidad grafica automatica en VM
+if systemd-detect-virt -q 2>/dev/null; then
+    sudo pacman -S --noconfirm --needed open-vm-tools mesa seatd 2>/dev/null || true
+    sudo systemctl enable --now vmtoolsd vmware-vmblock-fuse seatd 2>/dev/null || true
+    sudo usermod -aG seat,video,input "$USER" 2>/dev/null || true
+    if [ -f "$HOME/.config/hypr/hyprland.conf" ] && ! grep -q "LIBGL_ALWAYS_SOFTWARE" "$HOME/.config/hypr/hyprland.conf"; then
+        printf "\nenv = LIBGL_ALWAYS_SOFTWARE,1\nenv = WLR_NO_HARDWARE_CURSORS,1\nenv = WLR_RENDERER_ALLOW_SOFTWARE,1\n" >> "$HOME/.config/hypr/hyprland.conf"
     fi
 fi
 
-echo "[+] Entorno instalado. Usa Super + W para elegir tema (King, Minato, Zenitsu, Demon, Kimetsu, Goku) y Super + Shift + L para bloquear."
-
-# --- Configurar SDDM automáticamente para el usuario actual ---
+# 7. Configurar pantalla de inicio SDDM (Cyberpunk / Astronaut) para el usuario actual
 if [ -d "$REPO_DIR/sddm/themes/sddm-astronaut-theme" ]; then
-    echo "[*] Instalando y configurando pantalla de inicio SDDM para $USER..."
-    sudo pacman -S --noconfirm --needed sddm qt6-svg qt6-virtualkeyboard qt6-multimedia-ffmpeg 2>/dev/null || true
-
+    echo "[*] Configurando SDDM para $USER..."
     sudo mkdir -p /usr/share/sddm/themes /etc/sddm.conf.d /usr/share/fonts/sddm-astronaut
     sudo rm -rf /usr/share/sddm/themes/sddm-astronaut-theme
     sudo cp -rf "$REPO_DIR/sddm/themes/sddm-astronaut-theme" /usr/share/sddm/themes/
@@ -75,7 +89,13 @@ if [ -d "$REPO_DIR/sddm/themes/sddm-astronaut-theme" ]; then
     sudo rm -f /etc/sddm.conf /etc/sddm.conf.d/*.conf
     printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf >/dev/null
     printf "[Theme]\nCurrent=sddm-astronaut-theme\n" | sudo tee /etc/sddm.conf.d/theme.conf >/dev/null
-
     sudo find /usr/share/sddm/themes/sddm-astronaut-theme -maxdepth 2 -name "*.conf" -exec sed -i "s/^User=.*/User=$USER/g" {} + 2>/dev/null || true
-    sudo systemctl enable sddm 2>/dev/null || true
 fi
+
+# 8. Habilitar servicios y Zsh
+sudo systemctl enable NetworkManager sddm 2>/dev/null || true
+if [ "$SHELL" != "/usr/bin/zsh" ] && command -v zsh >/dev/null 2>&1; then
+    sudo chsh -s /usr/bin/zsh "$USER" 2>/dev/null || true
+fi
+
+echo "[+] Instalacion completada para $USER. Ejecuta: sudo reboot"
