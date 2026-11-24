@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(ls -1 "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n1 | xargs -n1 basename)}"
+export HYPRLAND_INSTANCE_SIGNATURE="${HYPRLAND_INSTANCE_SIGNATURE:-$(ls -1t "$XDG_RUNTIME_DIR"/hypr/ 2>/dev/null | head -n1)}"
+
+python3 - << 'PY'
+import pathlib, re, subprocess
+
+home = pathlib.Path.home()
+wallust_file = home / ".config/waybar/colors-wallust.css"
+waybar_style = home / ".config/waybar/style.css"
+
+def to_rgba(val, alpha=0.92):
+    val = val.strip()
+    if val.startswith("rgba("):
+        return re.sub(r",\s*[0-9.]+\)$", f", {alpha})", val)
+    if val.startswith("rgb("):
+        return val.replace("rgb(", "rgba(").replace(")", f", {alpha})")
+    h = val.lstrip("#")
+    if len(h) == 6:
+        r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+        return f"rgba({r}, {g}, {b}, {alpha})"
+    return val
+
+# 1. Extraer colores exactos del entorno activo en Waybar
+colors = {"bg": "#0e1016", "fg": "#eaeaea", "border": "#58e1ff", "accent": "#58e1ff"}
+if wallust_file.exists():
+    txt = wallust_file.read_text(errors="ignore")
+    for k, v in re.findall(r"@define-color\s+(\S+)\s+([^;]+);", txt):
+        colors[k] = v.strip()
+
+accent = colors.get("border") or colors.get("accent") or colors.get("color4") or "#58e1ff"
+accent_alt = colors.get("color2") or colors.get("color5") or accent
+fg = colors.get("fg") or colors.get("foreground") or "#eaeaea"
+bg = colors.get("bg") or colors.get("background") or "#0e1016"
+
+# 2. Detectar entorno activo por contenido de style.css / cache para elegir animacion
+hint = ""
+if waybar_style.exists():
+    hint += waybar_style.read_text(errors="ignore").lower()
+for f in [home / ".cache/current_wallpaper", home / ".cache/wallust/wallpaper"]:
+    if f.exists():
+        hint += " " + f.read_text(errors="ignore").lower()
+
+if "minato" in hint or accent.lower() in ["#ffffff", "#f5f5f5", "#e5e5e5", "#d4d4d4"]:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_flash", "0.05, 0.98, 0.1, 1.0", "popin 85%", "1.9"
+elif "zenitsu" in hint:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_thunder", "0.02, 0.99, 0.08, 1.0", "slide top", "1.7"
+elif "demon" in hint or "berserk" in hint:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_eclipse", "0.22, 1.0, 0.36, 1.0", "slide right", "4.5"
+elif "goku" in hint:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_ki", "0.16, 1.15, 0.3, 1.0", "slide right", "2.8"
+elif "kimetsu" in hint:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_water", "0.25, 0.9, 0.35, 1.0", "slide right", "3.5"
+elif "king" in hint:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_king", "0.18, 1.0, 0.32, 1.0", "popin 88%", "3.0"
+else:
+    bz_name, bz_pts, anim_cc, speed = "shinobi_default", "0.15, 0.95, 0.25, 1.0", "slide right", "3.0"
+
+bg_rgba = to_rgba(bg, 0.90)
+card_rgba = to_rgba(bg, 0.96)
+btn_rgba = to_rgba(accent, 0.18)
+
+# 3. Escribir style.css de SwayNC identico a la paleta de Waybar
+css = f"""* {{
+  font-family: "JetBrainsMono Nerd Font", sans-serif;
+  font-weight: 600;
+}}
+
+.control-center {{
+  background: {bg_rgba};
+  border: 2px solid {accent};
+  border-radius: 18px;
+  color: {fg};
+  padding: 14px;
+}}
+
+.widget-title {{
+  color: {accent};
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}}
+
+.widget-title > button {{
+  background: {btn_rgba};
+  color: {fg};
+  border: 1px solid {accent};
+  border-radius: 10px;
+  padding: 4px 12px;
+}}
+
+.widget-title > button:hover {{
+  background: {accent};
+  color: {bg};
+}}
+
+.widget-dnd {{
+  background: {card_rgba};
+  border: 1px solid {accent};
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  color: {fg};
+}}
+
+.widget-dnd > switch {{
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+}}
+
+.widget-dnd > switch:checked {{
+  background: {accent};
+}}
+
+.widget-mpris {{
+  background: {card_rgba};
+  border: 1px solid {accent_alt};
+  border-radius: 14px;
+  padding: 8px;
+  margin-bottom: 10px;
+}}
+
+.notification {{
+  background: {card_rgba};
+  border: 1px solid {accent};
+  border-left: 4px solid {accent};
+  border-radius: 14px;
+  padding: 10px 12px;
+}}
+
+.summary {{
+  color: {accent};
+  font-weight: 700;
+}}
+
+.body {{
+  color: {fg};
+}}
+"""
+
+for target in [home / ".config/swaync/style.css", home / "shinobi-hypr/swaync/style.css"]:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(css)
+
+# 4. Aplicar animaciones dinamicas en Hyprland 0.57.2
+for cmd in [
+    ["hyprctl", "keyword", "bezier", f"{bz_name}, {bz_pts}"],
+    ["hyprctl", "keyword", "layerrule", f"animation {anim_cc}, match:namespace swaync-control-center"],
+    ["hyprctl", "keyword", "layerrule", f"animation {anim_cc}, match:namespace swaync-notification-window"],
+    ["hyprctl", "keyword", "animation", f"layers, 1, {speed}, {bz_name}"],
+]:
+    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+PY
+
+swaync-client -rs >/dev/null 2>&1 || true
