@@ -194,3 +194,7 @@ if [ -d "$REPO_DIR/swaync" ]; then
     mkdir -p "$HOME/.config/swaync"
     cp -rf "$REPO_DIR/swaync/"* "$HOME/.config/swaync/"
 fi
+# Instalar swaylock-effects para pantalla de bloqueo dinamica
+if command -v yay >/dev/null 2>&1; then
+    yay -S --noconfirm --answerdiff None --answerclean None swaylock-effects 2>/dev/null || true
+fi
