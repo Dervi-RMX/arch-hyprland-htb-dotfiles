@@ -8,6 +8,7 @@ SEL=$(cat << 'LIST' | rofi -dmenu -i -p "󰌌 Cheatsheet" -theme-str 'window {wi
 [SISTEMA]   Super + Shift + R    -> Recargar entorno (Waybar + Kitty)
 [SISTEMA]   Super + H / F1       -> Abrir este Cheatsheet interactivo
 [SISTEMA]   Super + W            -> Cambiar Wallpaper y Tema (Minato / Zenitsu / Kimetsu)
+[SISTEMA]   Super + U / Shift+L  -> Bloquear pantalla (dinámico por entorno)
 [SISTEMA]   Super + Q            -> Cerrar ventana activa
 [SISTEMA]   Super + M            -> Cerrar sesión de Hyprland
 [APPS]      Super + Return       -> Abrir terminal Kitty

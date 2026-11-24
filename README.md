@@ -160,6 +160,7 @@ El entorno contempla la visualización de la interfaz `tun0` en Waybar para iden
 | `Super + E` | Abrir administrador de archivos |
 | `Super + Q` | Cerrar ventana |
 | `Super + V` | Alternar ventana flotante |
+| `Super + U` / `Super + Shift + L` | Bloquear pantalla (dinámico por entorno) |
 | `Super + W` | Selector de temas |
 | `Super + H` | Cheatsheet |
 | `Super + Shift + R` | Recargar configuración |
