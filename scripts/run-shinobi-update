@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(ls -1 "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n1 | xargs -n1 basename)}"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+
+kitty --title "Actualizando shinobi-hypr" bash -c '
+    echo -e "\033[1;36m⚡ Descargando últimos cambios de shinobi-hypr...\033[0m"
+    cd "$HOME/shinobi-hypr" && git pull --rebase && ./install.sh
+    echo -e "\n\033[1;32m✔ Entorno actualizado correctamente.\033[0m"
+    sleep 2
+' >/dev/null 2>&1 &

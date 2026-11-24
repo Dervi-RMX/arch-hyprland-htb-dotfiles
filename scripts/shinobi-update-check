@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+REPO="Dervi-RMX/shinobi-hypr"
+BRANCH="main"
+STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
+STATE_FILE="$STATE_DIR/shinobi-hypr-last-commit"
+
+mkdir -p "$STATE_DIR"
+
+RESPONSE=$(curl -fsSL -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/${REPO}/commits/${BRANCH}" 2>/dev/null) || exit 0
+
+LATEST_SHA=$(printf '%s' "$RESPONSE" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("sha",""))' 2>/dev/null)
+COMMIT_MSG=$(printf '%s' "$RESPONSE" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("commit",{}).get("message","").splitlines()[0])' 2>/dev/null)
+
+[ -z "$LATEST_SHA" ] && exit 0
+
+if [ ! -f "$STATE_FILE" ]; then
+    printf '%s\n' "$LATEST_SHA" > "$STATE_FILE"
+    exit 0
+fi
+
+LAST_SHA=$(cat "$STATE_FILE" 2>/dev/null)
+
+if [ "$LATEST_SHA" != "$LAST_SHA" ]; then
+    printf '%s\n' "$LATEST_SHA" > "$STATE_FILE"
+    export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}"
+    notify-send -u normal -t 15000 -i system-software-update \
+      --action="default=Actualizar ahora" \
+      "Actualización en shinobi-hypr" \
+      "${COMMIT_MSG}\nHaz clic aquí para actualizar." >/dev/null 2>&1 &
+fi

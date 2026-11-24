@@ -5,16 +5,12 @@
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
-  "cssPriority": "user",
+  "cssPriority": "application",
   "control-center-margin-top": 12,
   "control-center-margin-bottom": 12,
   "control-center-margin-right": 14,
   "control-center-margin-left": 0,
-  "notification-2fa-action": true,
-  "notification-inline-replies": false,
   "notification-icon-size": 44,
-  "notification-body-image-height": 120,
-  "notification-body-image-width": 220,
   "timeout": 5,
   "timeout-low": 3,
   "timeout-critical": 0,
@@ -23,11 +19,7 @@
   "control-center-height": 640,
   "notification-window-width": 370,
   "keyboard-shortcuts": true,
-  "image-visibility": "when-available",
   "transition-time": 250,
-  "hide-on-clear": false,
-  "hide-on-action": true,
-  "script-fail-notify": false,
   "widgets": [
     "title",
     "dnd",
@@ -36,7 +28,7 @@
   ],
   "widget-config": {
     "title": {
-      "text": "⚡ Centro de Notificaciones",
+      "text": "\u26a1 Centro de Notificaciones",
       "clear-all-button": true,
       "button-text": "Limpiar"
     },
@@ -46,6 +38,13 @@
     "mpris": {
       "image-size": 56,
       "image-radius": 10
+    }
+  },
+  "scripts": {
+    "shinobi-update": {
+      "exec": "/home/dervi/.local/bin/run-shinobi-update",
+      "summary": "Actualizaci\u00f3n en shinobi-hypr",
+      "run-on": "action"
     }
   }
 }

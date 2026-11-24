@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+trap "$HOME/.local/bin/sync-swaync-theme >/dev/null 2>&1 || true" EXIT
 export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v "\.lock" | head -n 1 | xargs -r basename)}"
 set -euo pipefail
 
