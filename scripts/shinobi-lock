@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-$(ls -1 "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n1 | xargs -n1 basename)}"
+
+# 1. Detectar el wallpaper exacto del entorno activo
+IMG=""
+if command -v swww >/dev/null 2>&1; then
+    IMG=$(swww query 2>/dev/null | grep -oP 'image:\s*\K.*' | head -n1)
+fi
+if [ -z "$IMG" ] || [ ! -f "$IMG" ]; then
+    for f in "$HOME/.cache/current_wallpaper" "$HOME/.cache/wallust/wallpaper"; do
+        [ -f "$f" ] && CAND=$(cat "$f" | tr -d '\r\n') && [ -f "$CAND" ] && IMG="$CAND" && break
+    done
+fi
+if [ -z "$IMG" ] || [ ! -f "$IMG" ]; then
+    IMG=$(find "$HOME/shinobi-hypr/assets" "$HOME/Pictures" -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.webp" \) 2>/dev/null | head -n1)
+fi
+
+# 2. Extraer el color de acento (@border / @fg / @bg) del entorno activo
+WALLUST_CSS="$HOME/.config/waybar/colors-wallust.css"
+ACCENT=$(grep -oP '@define-color\s+border\s+#\K[0-9a-fA-F]{6}' "$WALLUST_CSS" 2>/dev/null || echo "e5e5e5")
+FG=$(grep -oP '@define-color\s+fg\s+#\K[0-9a-fA-F]{6}' "$WALLUST_CSS" 2>/dev/null || echo "ffffff")
+BG=$(grep -oP '@define-color\s+bg\s+#\K[0-9a-fA-F]{6}' "$WALLUST_CSS" 2>/dev/null || echo "0d0d12")
+
+# Evitar doble instancia si ya esta bloqueado
+pgrep -x swaylock >/dev/null 2>&1 && exit 0
+
+exec swaylock \
+  --image "$IMG" \
+  --scaling fill \
+  --clock \
+  --timestr "%I:%M %p" \
+  --datestr "%a, %B %e" \
+  --indicator \
+  --indicator-radius 155 \
+  --indicator-thickness 10 \
+  --inside-color "${BG}e6" \
+  --inside-clear-color "${BG}f0" \
+  --inside-ver-color "${BG}f0" \
+  --inside-wrong-color "2b090ef0" \
+  --ring-color "${ACCENT}ff" \
+  --ring-clear-color "f59e0bff" \
+  --ring-ver-color "00f5d4ff" \
+  --ring-wrong-color "ff2a4bff" \
+  --key-hl-color "${FG}ff" \
+  --bs-hl-color "ff2a4bff" \
+  --line-color "00000000" \
+  --separator-color "00000000" \
+  --text-color "${FG}ff" \
+  --text-clear-color "${FG}ff" \
+  --text-ver-color "00f5d4ff" \
+  --text-wrong-color "ff2a4bff" \
+  --font "JetBrainsMono Nerd Font" \
+  --fade-in 0.25
