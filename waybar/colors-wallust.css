@@ -1,7 +1,7 @@
-@define-color bg        rgba(10, 14, 18, 0.88);
-@define-color bg-alt    rgba(18, 28, 34, 0.92);
-@define-color fg        #f8fafc;
-@define-color accent    #10b981;
+@define-color bg        rgba(9, 9, 11, 0.90);
+@define-color bg-alt    rgba(24, 24, 27, 0.94);
+@define-color fg        #f4f4f5;
+@define-color accent    #dc2626;
 @define-color accent2   #f97316;
-@define-color border    #34d399;
-@define-color urgent    #ef4444;
+@define-color border    #ef4444;
+@define-color urgent    #fca5a5;

@@ -13,7 +13,7 @@ if command -v pacman >/dev/null 2>&1; then
     echo "[*] Instalando paquetes..."
     sudo pacman -Syu --noconfirm
     sudo pacman -S --noconfirm --needed \
-        git base-devel hyprland waybar kitty rofi-wayland swaybg awww \
+        git base-devel hyprland waybar playerctl pavucontrol kitty rofi-wayland swaybg awww \
         hyprlock swaylock starship fastfetch zsh zsh-autosuggestions zsh-syntax-highlighting yazi \
         grim slurp wl-clipboard libnotify dunst \
         pipewire pipewire-pulse wireplumber pavucontrol \
@@ -259,5 +259,6 @@ if command -v spicetify >/dev/null 2>&1; then
         spicetify apply >/dev/null 2>&1 || true
     fi
 fi
-cp -f "$SCRIPT_DIR/scripts/shinobi-bar-toggle" "$HOME/.local/bin/shinobi-bar-toggle" 2>/dev/null && chmod +x "$HOME/.local/bin/shinobi-bar-toggle"
+cp -f "$SCRIPT_DIR/scripts/shinobi-bar-toggle" "$SCRIPT_DIR/scripts/wallpaper-picker" "$HOME/.local/bin/" 2>/dev/null && chmod +x "$HOME/.local/bin/shinobi-bar-toggle" "$HOME/.local/bin/wallpaper-picker"
+mkdir -p "$HOME/.cache" && [ ! -f "$HOME/.cache/shinobi-bar-mode" ] && echo "left" > "$HOME/.cache/shinobi-bar-mode"
 cp -f "$SCRIPT_DIR/waybar/config-vertical.jsonc" "$SCRIPT_DIR/waybar/style-vertical.css" "$HOME/.config/waybar/" 2>/dev/null || true

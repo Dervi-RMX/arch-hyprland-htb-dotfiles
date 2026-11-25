@@ -9,13 +9,14 @@
     "spacing": 0,
     "modules-left": [
         "custom/launcher",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "wlr/taskbar"
     ],
     "modules-center": [
         "clock"
     ],
     "modules-right": [
-        "custom/spotify-icon",
+        "tray",
         "custom/vpn-icon",
         "pulseaudio",
         "cpu",
@@ -44,13 +45,6 @@
     "clock": {
         "format": "{:%H\n%M}",
         "tooltip-format": "{:%Y-%m-%d | %I:%M %p}"
-    },
-    "custom/spotify-icon": {
-        "format": "",
-        "exec": "playerctl -p spotify metadata --format '{{artist}} - {{title}}' 2>/dev/null || echo 'Spotify'",
-        "interval": 5,
-        "on-click": "playerctl -p spotify play-pause",
-        "tooltip": true
     },
     "custom/vpn-icon": {
         "format": "󰖂",
@@ -85,5 +79,20 @@
         "format": "",
         "on-click": "pkill -x wlogout || wlogout -b 6",
         "tooltip": false
+    },
+    "wlr/taskbar": {
+        "format": "{icon}",
+        "icon-size": 20,
+        "tooltip-format": "{title}",
+        "on-click": "activate",
+        "on-click-middle": "close",
+        "ignore-list": [
+            "Rofi",
+            "wlogout"
+        ]
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 6
     }
 }

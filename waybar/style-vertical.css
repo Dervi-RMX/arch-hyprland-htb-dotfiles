@@ -2,7 +2,7 @@
 
 * {
     font-family: "JetBrainsMono Nerd Font", sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     border: none;
     min-width: 0;
@@ -12,7 +12,7 @@
 window#waybar {
     background-color: @bg;
     border: 1.5px solid @border;
-    border-radius: 18px;
+    border-radius: 16px;
     color: @fg;
 }
 
@@ -24,8 +24,8 @@ window#waybar {
     margin-bottom: 8px;
 }
 
+/* Todos los botones individuales con exactamente el mismo ancho y alineacion */
 #custom-launcher,
-#custom-spotify-icon,
 #custom-vpn-icon,
 #pulseaudio,
 #cpu,
@@ -33,7 +33,7 @@ window#waybar {
 #custom-power {
     background-color: @bg-alt;
     border: 1px solid alpha(@border, 0.35);
-    border-radius: 11px;
+    border-radius: 10px;
     min-width: 32px;
     min-height: 32px;
     margin: 3px 6px;
@@ -43,7 +43,6 @@ window#waybar {
 }
 
 #custom-launcher:hover,
-#custom-spotify-icon:hover,
 #custom-vpn-icon:hover,
 #pulseaudio:hover,
 #cpu:hover,
@@ -54,31 +53,37 @@ window#waybar {
 
 #custom-launcher {
     color: @accent;
-    font-size: 17px;
-    margin-bottom: 8px;
+    font-size: 16px;
+    margin-bottom: 6px;
 }
 
-#workspaces {
+/* Capsulas de workspaces, apps abiertas y bandeja con el mismo ancho exterior (32px) */
+#workspaces,
+#taskbar,
+#tray {
     background-color: @bg-alt;
     border: 1px solid alpha(@border, 0.30);
-    border-radius: 12px;
-    margin: 2px 6px;
+    border-radius: 11px;
+    min-width: 32px;
+    margin: 3px 6px;
     padding: 4px 0;
 }
 
-#workspaces button {
-    min-width: 26px;
-    min-height: 26px;
+#workspaces button,
+#taskbar button {
+    min-width: 24px;
+    min-height: 24px;
     margin: 2px 3px;
     padding: 0;
-    border-radius: 8px;
-    font-size: 12px;
+    border-radius: 7px;
+    font-size: 11px;
     color: alpha(@fg, 0.65);
     background: transparent;
     transition: all 0.2s ease;
 }
 
-#workspaces button:hover {
+#workspaces button:hover,
+#taskbar button:hover {
     background-color: alpha(@accent, 0.25);
     color: @fg;
 }
@@ -89,19 +94,20 @@ window#waybar {
     font-weight: 800;
 }
 
+#taskbar button.active {
+    background-color: alpha(@accent, 0.35);
+    border: 1px solid @accent;
+}
+
 #clock {
     background-color: @bg-alt;
     border: 1px solid @border;
-    border-radius: 11px;
+    border-radius: 10px;
     min-width: 32px;
     margin: 4px 6px;
-    padding: 7px 0;
-    font-size: 12px;
+    padding: 6px 0;
+    font-size: 11px;
     color: @accent;
-}
-
-#custom-spotify-icon {
-    color: #22c55e;
 }
 
 #custom-power {
