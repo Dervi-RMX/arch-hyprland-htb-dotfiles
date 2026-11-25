@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 CSS="$HOME/.config/waybar/colors-wallust.css"
 OUT_DIR="$HOME/.config/wlogout/icons"
@@ -8,36 +7,153 @@ SRC_DIR="/usr/share/wlogout/icons"
 
 mkdir -p "$OUT_DIR"
 
-FG=$(grep -E '@define-color\s+fg\b' "$CSS" 2>/dev/null | awk '{print $3}' | tr -d ';')
-BORDER=$(grep -E '@define-color\s+border\b' "$CSS" 2>/dev/null | awk '{print $3}' | tr -d ';')
+FG=$(grep -E '@define-color\s+fg\b' "$CSS" 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' | head -n 1)
+BORDER=$(grep -E '@define-color\s+border\b' "$CSS" 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' | head -n 1)
 [ -n "$FG" ] || FG="#f8fafc"
-[ -n "$BORDER" ] || BORDER="#38bdf8"
+[ -n "$BORDER" ] || BORDER="#f59e0b"
 
 python3 - "$SRC_DIR" "$OUT_DIR" "$FG" "$BORDER" << 'PY'
-import sys, pathlib
-src, out, fg_hex, bd_hex = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3].lstrip("#"), sys.argv[4].lstrip("#")
-fg_rgb = tuple(int(fg_hex[i:i+2], 16) for i in (0, 2, 4))
-bd_rgb = tuple(int(bd_hex[i:i+2], 16) for i in (0, 2, 4))
+import sys, pathlib, zlib, struct, shutil
 
-try:
-    from PIL import Image
-except ImportError:
-    import shutil
-    for name in ("lock", "logout", "suspend", "hibernate", "reboot", "shutdown"):
-        p = src / f"{name}.png"
-        if p.exists():
-            shutil.copy2(p, out / f"{name}.png")
-            shutil.copy2(p, out / f"{name}-hover.png")
-    sys.exit(0)
+src_dir = pathlib.Path(sys.argv[1])
+out_dir = pathlib.Path(sys.argv[2])
+fg_hex = sys.argv[3].lstrip("#")
+bd_hex = sys.argv[4].lstrip("#")
+
+def recolor_png(src_path, dst_path, hex_color):
+    data = src_path.read_bytes()
+    if data[:8] != b'\x89PNG\r\n\x1a\n':
+        shutil.copy2(src_path, dst_path)
+        return
+    r_new = int(hex_color[0:2], 16)
+    g_new = int(hex_color[2:4], 16)
+    b_new = int(hex_color[4:6], 16)
+
+    pos = 8
+    ihdr = None
+    idat_chunks = []
+    while pos < len(data):
+        length = struct.unpack(">I", data[pos:pos+4])[0]
+        ctype = data[pos+4:pos+8]
+        cdata = data[pos+8:pos+8+length]
+        pos += 12 + length
+        if ctype == b'IHDR':
+            ihdr = cdata
+        elif ctype == b'IDAT':
+            idat_chunks.append(cdata)
+
+    w, h, bit_depth, color_type, _, _, _ = struct.unpack(">IIBBBBB", ihdr)
+    # Solo soporta 8-bit RGBA (color_type == 6) o Grayscale+Alpha (color_type == 4)
+    if bit_depth != 8 or color_type not in (4, 6):
+        shutil.copy2(src_path, dst_path)
+        return
+
+    bpp = 4 if color_type == 6 else 2
+    raw = zlib.decompress(b"".join(idat_chunks))
+    stride = w * bpp
+    recon = bytearray(h * stride)
+
+    def paeth(a, b, c):
+        p = a + b - c
+        pa, pb, pc = abs(p - a), abs(p - b), abs(p - c)
+        if pa <= pb and pa <= pc: return a
+        if pb <= pc: return b
+        return c
+
+    idx = 0
+    for y in range(h):
+        ftype = raw[idx]
+        idx += 1
+        row_start = y * stride
+        prev_start = (y - 1) * stride
+        for x in range(stride):
+            val = raw[idx]
+            idx += 1
+            a = recon[row_start + x - bpp] if x >= bpp else 0
+            b = recon[prev_start + x] if y > 0 else 0
+            c = recon[prev_start + x - bpp] if (y > 0 and x >= bpp) else 0
+            if ftype == 0: out_v = val
+            elif ftype == 1: out_v = (val + a) & 0xff
+            elif ftype == 2: out_v = (val + b) & 0xff
+            elif ftype == 3: out_v = (val + ((a + b) >> 1)) & 0xff
+            elif ftype == 4: out_v = (val + paeth(a, b, c)) & 0xff
+            recon[row_start + x] = out_v
+
+    # Construir imagen RGBA recoloreada conservando el canal alpha original
+    out_raw = bytearray()
+    for y in range(h):
+        out_raw.append(0) # filter 0 (None)
+        row_start = y * stride
+        for x in range(w):
+            alpha = recon[row_start + x * bpp + (bpp - 1)]
+            out_raw.extend((r_new, g_new, b_new, alpha))
+
+    def make_chunk(ctype, cdata):
+        return struct.pack(">I", len(cdata)) + ctype + cdata + struct.pack(">I", zlib.crc32(ctype + cdata) & 0xffffffff)
+
+    new_ihdr = struct.pack(">IIBBBBB", w, h, 8, 6, 0, 0, 0)
+    compressed = zlib.compress(bytes(out_raw), 6)
+    png_out = b'\x89PNG\r\n\x1a\n' + make_chunk(b'IHDR', new_ihdr) + make_chunk(b'IDAT', compressed) + make_chunk(b'IEND', b'')
+    dst_path.write_bytes(png_out)
 
 for name in ("lock", "logout", "suspend", "hibernate", "reboot", "shutdown"):
-    p = src / f"{name}.png"
-    if not p.exists():
-        continue
-    im = Image.open(p).convert("RGBA")
-    alpha = im.split()[3]
-    for suffix, rgb in (("", fg_rgb), ("-hover", bd_rgb)):
-        colored = Image.new("RGBA", im.size, rgb + (255,))
-        colored.putalpha(alpha)
-        colored.save(out / f"{name}{suffix}.png")
+    src = src_dir / f"{name}.png"
+    if src.exists():
+        recolor_png(src, out_dir / f"{name}.png", fg_hex)
+        recolor_png(src, out_dir / f"{name}-hover.png", bd_hex)
 PY
+
+cat << CSS_EOF > "$HOME/.config/wlogout/style.css"
+@import url("$HOME/.config/waybar/colors-wallust.css");
+
+* {
+    background-image: none;
+    box-shadow: none;
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+}
+
+window {
+    background-color: alpha(@bg, 0.72);
+}
+
+button {
+    color: @fg;
+    background-color: alpha(@bg-alt, 0.55);
+    border: 1px solid alpha(@border, 0.35);
+    border-radius: 36px;
+    margin: 185px 10px;
+    background-repeat: no-repeat;
+    background-position: center 42%;
+    background-size: 64px 64px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+button:focus,
+button:active,
+button:hover {
+    background-color: alpha(@accent, 0.28);
+    border: 2px solid @border;
+    color: @border;
+    outline-style: none;
+}
+
+#lock { background-image: url("$OUT_DIR/lock.png"); }
+#lock:focus, #lock:hover { background-image: url("$OUT_DIR/lock-hover.png"); }
+
+#reboot { background-image: url("$OUT_DIR/reboot.png"); }
+#reboot:focus, #reboot:hover { background-image: url("$OUT_DIR/reboot-hover.png"); }
+
+#shutdown { background-image: url("$OUT_DIR/shutdown.png"); }
+#shutdown:focus, #shutdown:hover { background-image: url("$OUT_DIR/shutdown-hover.png"); }
+
+#logout { background-image: url("$OUT_DIR/logout.png"); }
+#logout:focus, #logout:hover { background-image: url("$OUT_DIR/logout-hover.png"); }
+
+#suspend { background-image: url("$OUT_DIR/suspend.png"); }
+#suspend:focus, #suspend:hover { background-image: url("$OUT_DIR/suspend-hover.png"); }
+
+#hibernate { background-image: url("$OUT_DIR/hibernate.png"); }
+#hibernate:focus, #hibernate:hover { background-image: url("$OUT_DIR/hibernate-hover.png"); }
+CSS_EOF
