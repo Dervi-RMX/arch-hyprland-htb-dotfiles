@@ -247,3 +247,15 @@ if [ -f "$SCRIPT_DIR/scripts/shinobi-wlogout-icons" ]; then
     chmod +x "$HOME/.local/bin/shinobi-wlogout-icons"
     "$HOME/.local/bin/shinobi-wlogout-icons" 2>/dev/null || true
 fi
+# --- SPICETIFY HAZY GLASS THEME ---
+echo "[*] Configurando tema transparente Hazy para Spotify (Spicetify)..."
+if command -v spicetify >/dev/null 2>&1; then
+    rm -rf /tmp/Hazy "$HOME/.config/spicetify/Themes/Hazy"
+    if git clone --depth=1 https://github.com/Astromations/Hazy.git /tmp/Hazy 2>/dev/null; then
+        mkdir -p "$HOME/.config/spicetify/Themes/Hazy"
+        cp -rf /tmp/Hazy/* "$HOME/.config/spicetify/Themes/Hazy/"
+        rm -rf /tmp/Hazy
+        spicetify config current_theme Hazy color_scheme dark inject_css 1 replace_colors 1 overwrite_assets 1 inject_theme_js 1 >/dev/null 2>&1 || true
+        spicetify apply >/dev/null 2>&1 || true
+    fi
+fi
