@@ -42,7 +42,7 @@
   },
   "scripts": {
     "shinobi-update": {
-      "exec": "/home/dervi/.local/bin/run-shinobi-update",
+      "exec": "$HOME/.local/bin/run-shinobi-update",
       "summary": "Actualizaci\u00f3n en shinobi-hypr",
       "run-on": "action"
     }
