@@ -150,5 +150,5 @@ hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.swap({ direction = "right" 
 hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.swap({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.swap({ direction = "down" }))
 
-
-
+-- Alternar barra superior / lateral izquierda
+hl.bind({ "SUPER" }, "B", function() hl.exec("$HOME/.local/bin/shinobi-bar-toggle") end)

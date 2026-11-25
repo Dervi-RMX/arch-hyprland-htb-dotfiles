@@ -1,0 +1,75 @@
+{
+    "layer": "top",
+    "position": "left",
+    "width": 44,
+    "margin-top": 8,
+    "margin-bottom": 8,
+    "margin-left": 8,
+    "spacing": 8,
+    "modules-left": [
+        "custom/launcher",
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "custom/vpn",
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "custom/power"
+    ],
+    "custom/launcher": {
+        "format": "",
+        "on-click": "rofi -show drun",
+        "tooltip": false
+    },
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-click": "activate",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "active": "●",
+            "default": "○"
+        },
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+    "clock": {
+        "format": "{:%H\n%M}",
+        "tooltip-format": "{:%Y-%m-%d | %A}"
+    },
+    "custom/vpn": {
+        "format": "󰖂",
+        "exec": "ip -4 addr show tun0 2>/dev/null | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' || echo 'No VPN'",
+        "interval": 5,
+        "tooltip": true
+    },
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol"
+    },
+    "cpu": {
+        "format": "\n{usage}%",
+        "interval": 2
+    },
+    "memory": {
+        "format": "\n{percentage}%",
+        "interval": 3
+    },
+    "custom/power": {
+        "format": "⏻",
+        "on-click": "pkill -x wlogout || wlogout -b 6",
+        "tooltip": false
+    }
+}

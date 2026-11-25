@@ -259,3 +259,5 @@ if command -v spicetify >/dev/null 2>&1; then
         spicetify apply >/dev/null 2>&1 || true
     fi
 fi
+cp -f "$SCRIPT_DIR/scripts/shinobi-bar-toggle" "$HOME/.local/bin/shinobi-bar-toggle" 2>/dev/null && chmod +x "$HOME/.local/bin/shinobi-bar-toggle"
+cp -f "$SCRIPT_DIR/waybar/config-vertical.jsonc" "$SCRIPT_DIR/waybar/style-vertical.css" "$HOME/.config/waybar/" 2>/dev/null || true

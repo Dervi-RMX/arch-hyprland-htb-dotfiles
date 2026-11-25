@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+STATE_FILE="$HOME/.cache/shinobi-bar-mode"
+mkdir -p "$HOME/.cache"
+
+MODE=$(cat "$STATE_FILE" 2>/dev/null || echo "top")
+
+pkill -x waybar 2>/dev/null || true
+sleep 0.2
+
+if [ "$MODE" = "top" ]; then
+    echo "left" > "$STATE_FILE"
+    nohup waybar -c "$HOME/.config/waybar/config-vertical.jsonc" -s "$HOME/.config/waybar/style-vertical.css" >/dev/null 2>&1 &
+else
+    echo "top" > "$STATE_FILE"
+    nohup waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" >/dev/null 2>&1 &
+fi
