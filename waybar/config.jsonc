@@ -34,7 +34,7 @@
         "format": "󰣇",
         "on-click": "$HOME/.local/bin/shinobi-dashboard-toggle",
         "tooltip": true,
-        "tooltip-format": "Aplicaciones (Rofi)",
+        "tooltip-format": "Shinobi Dashboard (Clic izq) | Apps (Clic der)",
         "on-click-right": "rofi -show drun"
     },
     "custom/terminal": {
