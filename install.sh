@@ -13,7 +13,7 @@ if [ ! -d "$REPO_DIR/.git" ]; then
     sudo pacman -Sy --needed --noconfirm git base-devel
     git clone "$REPO_URL" "$REPO_DIR"
 else
-    git -C "$REPO_DIR" pull --rebase origin main || true
+    git -C "$REPO_DIR" fetch origin && git -C "$REPO_DIR" reset --hard origin/main
 fi
 
 # 2. Instalar paquetes oficiales sin abortar si alguno ya tiene variante instalada (ej. swaylock-effects)

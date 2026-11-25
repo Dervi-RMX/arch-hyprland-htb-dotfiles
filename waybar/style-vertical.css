@@ -12,7 +12,7 @@
 
 window#waybar {
     background-color: @bg;
-    border: 1.5px solid @border;
+    border: 1.5px solid @color4;
     border-radius: 16px;
     color: @fg;
 }
@@ -33,7 +33,7 @@ window#waybar {
 #memory,
 #custom-power {
     background-color: @bg-alt;
-    border: 1px solid alpha(@border, 0.35);
+    border: 1px solid alpha(@color4, 0.35);
     border-radius: 10px;
     min-width: 32px;
     min-height: 32px;
@@ -63,7 +63,7 @@ window#waybar {
 #taskbar,
 #tray {
     background-color: @bg-alt;
-    border: 1px solid alpha(@border, 0.30);
+    border: 1px solid alpha(@color4, 0.30);
     border-radius: 11px;
     min-width: 32px;
     margin: 3px 6px;
@@ -102,7 +102,7 @@ window#waybar {
 
 #clock {
     background-color: @bg-alt;
-    border: 1px solid @border;
+    border: 1px solid @color4;
     border-radius: 10px;
     min-width: 32px;
     margin: 4px 6px;
