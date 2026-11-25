@@ -96,6 +96,10 @@ fi
 
 # 7. Recargar Hyprland y Waybar en segundo plano sin bloquear la terminal
 if [ -n "$WAYLAND_DISPLAY" ]; then
+    
+if systemd-detect-virt -q 2>/dev/null; then
+    grep -q "vm-performance.conf" "$HOME/.config/hypr/hyprland.conf" || echo "source = ~/.config/hypr/vm-performance.conf" >> "$HOME/.config/hypr/hyprland.conf"
+fi
     hyprctl reload >/dev/null 2>&1 || true
     killall waybar >/dev/null 2>&1 || true
     nohup waybar >/dev/null 2>&1 &
