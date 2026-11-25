@@ -24,7 +24,7 @@ PKGS=(
     pipewire pipewire-pulse wireplumber ttf-jetbrains-mono-nerd
     noto-fonts-emoji papirus-icon-theme libayatana-appindicator
     polkit-gnome xdg-desktop-portal-hyprland openvpn networkmanager
-    firefox xdg-utils unzip sddm qt6-5compat qt6-svg qt6-virtualkeyboard
+    firefox spotify-launcher xdg-utils unzip sddm qt6-5compat qt6-svg qt6-virtualkeyboard
     qt6-multimedia-ffmpeg python python-pillow jq curl wget
 )
 
@@ -74,6 +74,12 @@ mkdir -p "$HOME/.config/hypr" "$HOME/.config/waybar" "$HOME/.config/eww" \
 
 find "$HOME/.config/waybar" "$HOME/.config/eww" "$HOME/.config/hypr" "$HOME/.config/wlogout" -type f -exec sed -i "s|\\\$HOME|$HOME|g" {} +
 chmod +x "$HOME/.local/bin/"*
+sudo ln -sf "$HOME/.local/bin/spotify" /usr/local/bin/spotify
+mkdir -p "$HOME/.local/share/applications"
+for f in spotify.desktop spotify-launcher.desktop; do
+  printf "[Desktop Entry]\nName=Spotify\nExec=%s/.local/bin/spotify %%U\nIcon=spotify\nType=Application\nCategories=AudioVideo;Music;\n" "$HOME" > "$HOME/.local/share/applications/$f"
+done
+
 
 # 6. Configurar extensiones y paleta de colores inicial de VS Code, Dashboard y Wlogout
 if command -v code >/dev/null 2>&1; then

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+FLAGS=(--enable-features=UseOzonePlatform --ozone-platform=wayland)
+if systemd-detect-virt -q 2>/dev/null; then
+    FLAGS+=(--disable-gpu --disable-gpu-compositing --no-sandbox)
+fi
+if [ -x /usr/bin/spotify ]; then
+    exec /usr/bin/spotify "${FLAGS[@]}" "$@"
+elif [ -x /usr/bin/spotify-launcher ]; then
+    mkdir -p "$HOME/.config"
+    printf '[spotify]\nextra_arguments = [%s]\n' "$(printf '"%s", ' "${FLAGS[@]}" | sed 's/, $//')" > "$HOME/.config/spotify-launcher.conf"
+    exec /usr/bin/spotify-launcher "$@"
+fi
