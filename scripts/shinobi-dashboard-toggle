@@ -31,7 +31,7 @@ fi
 
 pgrep -x eww >/dev/null || eww -c "$EWW_DIR" daemon
 if eww -c "$EWW_DIR" active-windows | grep -q "shinobi_dash"; then
-    eww -c "$EWW_DIR" close shinobi_dash
+    eww -c "$EWW_DIR" close shinobi_closer shinobi_dash
 else
-    eww -c "$EWW_DIR" open shinobi_dash
+    eww -c "$EWW_DIR" open-many shinobi_closer shinobi_dash
 fi
