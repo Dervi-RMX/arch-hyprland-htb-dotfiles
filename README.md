@@ -1,4 +1,5 @@
- <div align="center">
+
+<div align="center">
 
 # 🥷 SHINOBI-HYPR
 
@@ -13,13 +14,12 @@
 [![Wayland](https://img.shields.io/badge/WAYLAND-FFBC00?style=for-the-badge&logo=wayland&logoColor=black)](https://wayland.freedesktop.org/)
 [![Eww](https://img.shields.io/badge/EWW-Dashboard-F97316?style=for-the-badge)](https://github.com/elkowar/eww)
 [![Hack The Box](https://img.shields.io/badge/HACK_THE_BOX-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black)](https://www.hackthebox.com/)
-[![GitHub](https://img.shields.io/badge/OPEN_SOURCE-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Dervi-RMX/shinobi-hypr)
 
 <br>
 
 **MINIMAL. DINÁMICO. PERSONALIZABLE.**
 
-[Características](#-características) · [Instalación](#-instalación) · [Atajos](#-atajos-de-teclado) · [Estructura](#-estructura-del-proyecto)
+[Características](#-características) · [Temas](#-sistema-de-temas) · [Instalación](#-instalación) · [Atajos](#-atajos-de-teclado)
 
 </div>
 
@@ -31,13 +31,13 @@
 
 ### SHINOBI-HYPR Desktop
 
-<img src="assets/preview2.png" width="100%" alt="SHINOBI-HYPR Desktop Preview">
+<img src="assets/preview2.png" width="100%" alt="SHINOBI-HYPR Desktop">
 
 <br><br>
 
-### Desktop Environment — Alternative View
+### Alternative Desktop View
 
-<img src="assets/preview3.png" width="100%" alt="SHINOBI-HYPR Alternative Preview">
+<img src="assets/preview3.png" width="100%" alt="SHINOBI-HYPR Alternative Desktop">
 
 </div>
 
@@ -45,26 +45,28 @@
 
 # 🧭 Tabla de contenidos
 
-- [✨ Características](#-características)
-- [🎨 Sistema de temas](#-sistema-de-temas)
-- [🖥️ Shinobi Dashboard](#️-shinobi-dashboard)
-- [📊 Waybar Dual](#-waybar-dual)
-- [🌈 Wallust](#-wallust--sincronización-de-colores)
-- [⚔️ Integración Hack The Box](#️-integración-hack-the-box)
-- [🛠️ Ecosistema de herramientas](#️-ecosistema-de-herramientas)
-- [⌨️ Atajos de teclado](#️-atajos-de-teclado)
-- [🚀 Instalación](#-instalación)
-- [📁 Estructura del proyecto](#-estructura-del-proyecto)
-- [⚙️ Personalización](#️-personalización)
-- [🔧 Solución de problemas](#-solución-de-problemas)
-- [🔄 Actualización](#-actualización)
-- [🤝 Contribuciones](#-contribuciones)
+- [Características](#-características)
+- [Sistema de temas](#-sistema-de-temas)
+- [Shinobi Dashboard](#-shinobi-dashboard)
+- [Waybar Dual](#-waybar-dual)
+- [Wallust](#-wallust--sincronización-de-colores)
+- [Integración Hack The Box](#-integración-hack-the-box)
+- [Ecosistema de herramientas](#-ecosistema-de-herramientas)
+- [Atajos de teclado](#-atajos-de-teclado)
+- [Instalación](#-instalación)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Personalización](#-personalización)
+- [Solución de problemas](#-solución-de-problemas)
+- [Actualización](#-actualización)
+- [Créditos](#-créditos)
 
 ---
 
 # ✨ Características
 
-SHINOBI-HYPR es un entorno de escritorio personalizado para Arch Linux que integra diferentes herramientas, configuraciones y automatizaciones en una sola experiencia.
+SHINOBI-HYPR es un entorno de escritorio personalizado para Arch Linux que reúne herramientas, configuraciones, automatizaciones y componentes visuales en una experiencia integrada.
+
+Su diseño está orientado tanto al uso diario como a entornos de aprendizaje y práctica de ciberseguridad.
 
 | Característica | Descripción |
 |---|---|
@@ -72,7 +74,7 @@ SHINOBI-HYPR es un entorno de escritorio personalizado para Arch Linux que integ
 | 🥷 Shinobi Dashboard | Panel interactivo desarrollado con Eww |
 | 📊 Waybar Dual | Barra superior y lateral intercambiables |
 | 🌈 Wallust | Sincronización automática de colores |
-| 🎨 Dynamic Themes | Seis temas visuales personalizables |
+| 🎨 Dynamic Themes | Sistema de seis temas visuales |
 | ⚔️ HTB Integration | Indicadores y utilidades para Hack The Box |
 | 🖥️ Kitty | Terminal personalizada |
 | 🚀 Rofi | Lanzador de aplicaciones |
@@ -88,41 +90,48 @@ SHINOBI-HYPR es un entorno de escritorio personalizado para Arch Linux que integ
 
 ---
 
-# 🎨 Sistema de temas dinámicos
+# 🎨 Sistema de temas
 
-SHINOBI-HYPR incluye seis temas visuales que permiten cambiar la apariencia del entorno.
+SHINOBI-HYPR incorpora seis temas visuales que permiten transformar la apariencia del entorno.
 
-Cada tema forma parte de un ecosistema de personalización que puede sincronizar diferentes componentes mediante Wallust.
+Cada tema cuenta con una identidad visual propia y forma parte de un sistema de personalización que integra diferentes componentes del escritorio.
 
 ### Características
 
-- Seis temas disponibles.
-- Personalización de terminal y paneles.
+- Seis temas visuales.
+- Personalización de terminales.
+- Configuración de paneles.
 - Integración con fondos de pantalla.
 - Sincronización cromática.
 - Personalización de cursores.
-- Configuraciones visuales para diferentes componentes.
+- Adaptación visual de diferentes componentes.
 
-**Selector de wallpapers y temas:** `Super + W`
+### Selector de temas
+
+Utiliza el siguiente atajo:
+
+```bash
+Super + W
+```
+
+Desde el selector puedes acceder a los fondos de pantalla y opciones de personalización disponibles.
 
 ---
 
-# 🖥️ Shinobi Dashboard
+# 🥷 Shinobi Dashboard
 
-<badge color="success">Eww Dashboard</badge>
+Uno de los componentes principales de SHINOBI-HYPR es **Shinobi Dashboard**, un panel interactivo desarrollado con Eww.
 
-Uno de los componentes principales del proyecto es **Shinobi Dashboard**, un panel interactivo desarrollado con Eww.
+Está diseñado para proporcionar acceso rápido a información y controles del sistema.
 
-Está diseñado para ofrecer acceso rápido a diferentes controles e información del sistema.
-
-### Secciones del Dashboard
+### Secciones principales
 
 | Sección | Funcionalidad |
 |---|---|
 | Dashboard | Panel principal |
 | Media | Controles multimedia |
 | Performance | Métricas de rendimiento |
-| Weather | Panel meteorológico |
+| Weather | Información meteorológica |
 
 ### Funcionalidades
 
@@ -134,26 +143,23 @@ Está diseñado para ofrecer acceso rápido a diferentes controles e informació
 - Integración con reproductores MPRIS.
 - Cierre automático al hacer clic fuera del panel.
 
-### Abrir o cerrar el Dashboard
+### Abrir y cerrar Dashboard
 
 | Atajo | Acción |
 |---|---|
 | `Super + Z` | Abrir o cerrar |
 | `Alt + Z` | Abrir o cerrar |
-| Clic en el icono de Arch | Abrir o cerrar |
+| Clic en icono de Arch | Abrir o cerrar |
 
 ---
 
 # 📊 Waybar Dual
 
-SHINOBI-HYPR incorpora un sistema de dos distribuciones de Waybar.
-
-<details>
-<summary><strong>Ver configuraciones</strong></summary>
+SHINOBI-HYPR incorpora dos distribuciones de Waybar para adaptar el escritorio a diferentes preferencias.
 
 ### Barra superior horizontal
 
-Diseñada para ofrecer información del sistema en una distribución tradicional.
+Diseñada para proporcionar información del sistema en una distribución tradicional.
 
 ### Barra lateral vertical
 
@@ -163,21 +169,23 @@ Una alternativa visual que aprovecha el espacio vertical de la pantalla.
 
 - Indicadores del sistema.
 - Estado de conexión VPN.
-- IP local.
+- Dirección IP local.
 - Objetivo activo de Hack The Box.
 - Información y controles personalizados.
 
-</details>
+### Cambiar entre barras
 
-**Cambiar entre las dos barras:** `Super + B`
+```bash
+Super + B
+```
 
 ---
 
 # 🌈 Wallust — Sincronización de colores
 
-Wallust permite generar una paleta de colores a partir del fondo de pantalla y utilizarla para personalizar diferentes componentes.
+Wallust permite generar una paleta de colores a partir del fondo de pantalla y utilizarla para personalizar diferentes componentes del escritorio.
 
-El objetivo es mantener una apariencia visual coherente en todo el escritorio.
+El objetivo es mantener una apariencia visual coherente en todo el entorno.
 
 ### Componentes integrados
 
@@ -189,13 +197,15 @@ El objetivo es mantener una apariencia visual coherente en todo el escritorio.
 - Wlogout.
 - Cursores.
 
-Al cambiar el fondo de pantalla, el entorno puede actualizar su apariencia mediante los scripts de sincronización correspondientes.
+Al cambiar el fondo de pantalla, los scripts de sincronización correspondientes permiten actualizar la apariencia de los componentes compatibles.
 
 ---
 
 # ⚔️ Integración Hack The Box
 
 SHINOBI-HYPR incorpora funcionalidades orientadas a facilitar el trabajo en laboratorios de Hack The Box.
+
+Su integración permite visualizar información relevante del entorno de laboratorio directamente desde el escritorio.
 
 ### 🎯 Gestión de objetivos
 
@@ -205,7 +215,7 @@ Establecer la dirección IP de un objetivo:
 settarget 10.10.11.100
 ```
 
-Asignar un nombre:
+Asignar un nombre al objetivo:
 
 ```bash
 settarget 10.10.11.100 MACHINE
@@ -244,7 +254,7 @@ ip -br addr
 La integración está orientada a facilitar la visualización de:
 
 - Estado de conexión VPN.
-- IP local.
+- Dirección IP local.
 - Objetivo activo.
 - Información del laboratorio.
 
@@ -252,9 +262,9 @@ La integración está orientada a facilitar la visualización de:
 
 # 🛠️ Ecosistema de herramientas
 
-SHINOBI-HYPR integra diferentes aplicaciones y configuraciones.
+SHINOBI-HYPR reúne diferentes herramientas para construir una experiencia de escritorio completa.
 
-| Herramienta | Uso |
+| Herramienta | Función |
 |---|---|
 | Arch Linux | Sistema operativo |
 | Hyprland | Gestor de ventanas |
@@ -269,7 +279,7 @@ SHINOBI-HYPR integra diferentes aplicaciones y configuraciones.
 | Starship | Prompt |
 | Fastfetch | Información del sistema |
 | SDDM | Gestor de inicio de sesión |
-| Swaylock | Temas de bloqueo |
+| Swaylock | Bloqueo de pantalla |
 | Spicetify | Personalización de Spotify |
 | Spotify | Reproductor de música |
 | Bibata / Capitaine | Cursores |
@@ -278,7 +288,7 @@ SHINOBI-HYPR integra diferentes aplicaciones y configuraciones.
 
 # ⌨️ Atajos de teclado
 
-Los siguientes atajos corresponden a las configuraciones compartidas para SHINOBI-HYPR.
+Los siguientes atajos corresponden a las configuraciones del entorno.
 
 | Atajo | Acción |
 |---|---|
@@ -290,7 +300,7 @@ Los siguientes atajos corresponden a las configuraciones compartidas para SHINOB
 | `Super + Return` | Abrir Kitty |
 | `Super + E` | Abrir Yazi en terminal |
 | `Super + Q` | Cerrar ventana activa |
-| `Super + L` | Bloquear pantalla con `shinobi-lock` |
+| `Super + L` | Bloquear pantalla con shinobi-lock |
 | `Super + Shift + S` | Captura de pantalla |
 | `Super + 1–9` | Cambiar de espacio de trabajo |
 
@@ -300,19 +310,18 @@ Los siguientes atajos corresponden a las configuraciones compartidas para SHINOB
 
 # 🚀 Instalación
 
-<badge color="success">One-Command Installer</badge>
-
 SHINOBI-HYPR incluye un instalador automático para facilitar el despliegue del entorno.
 
-### Requisitos
+## Requisitos
 
 - Arch Linux.
 - Conexión a Internet.
 - Usuario con permisos `sudo`.
-- `curl` disponible.
-- Una instalación de Arch Linux funcional.
+- Git.
+- Curl.
+- Una instalación funcional de Arch Linux.
 
-### Instalación en un solo comando
+## Instalación automática
 
 Abre una terminal y ejecuta:
 
@@ -322,54 +331,54 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Dervi-RMX/shinobi-hypr/main/
 
 El comando descarga y ejecuta el instalador directamente desde GitHub.
 
-### Instalación manual
+## Instalación manual
 
-Si prefieres descargar el proyecto y revisar los archivos antes de ejecutarlo:
+Si prefieres descargar el proyecto y revisar sus archivos antes de instalarlo:
 
-**1. Instalar Git y Curl**
+### 1. Instalar dependencias básicas
 
 ```bash
 sudo pacman -S --needed git curl
 ```
 
-**2. Clonar el repositorio**
+### 2. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Dervi-RMX/shinobi-hypr.git
 ```
 
-**3. Entrar en el directorio**
+### 3. Entrar al directorio
 
 ```bash
 cd shinobi-hypr
 ```
 
-**4. Revisar el instalador**
+### 4. Revisar el instalador
 
 ```bash
 less install.sh
 ```
 
-**5. Comprobar la sintaxis**
+### 5. Comprobar la sintaxis
 
 ```bash
 bash -n install.sh
 ```
 
-**6. Ejecutar**
+### 6. Ejecutar el instalador
 
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-**7. Reiniciar el sistema cuando finalice**
+### 7. Reiniciar el sistema cuando finalice
 
 ```bash
 sudo reboot
 ```
 
-### ⚠️ Advertencias importantes
+## ⚠️ Advertencias importantes
 
 Antes de instalar:
 
@@ -381,7 +390,7 @@ Antes de instalar:
 
 El instalador puede modificar configuraciones existentes, instalar paquetes, habilitar servicios y cambiar componentes del entorno.
 
-**No ejecutes el instalador como root directamente.** Utiliza tu usuario normal y permite que el script solicite `sudo` cuando lo necesite.
+**No ejecutes el instalador como root directamente.** Utiliza tu usuario normal y permite que el script solicite permisos `sudo` cuando los necesite.
 
 La instalación está diseñada para Arch Linux y no se garantiza su funcionamiento en otras distribuciones.
 
@@ -419,7 +428,7 @@ shinobi-hypr/
 
 # ⚙️ Personalización
 
-Puedes adaptar el entorno a tus preferencias modificando los archivos de configuración.
+SHINOBI-HYPR permite modificar diferentes componentes para adaptar el entorno a tus preferencias.
 
 | Directorio | Personalización |
 |---|---|
@@ -441,7 +450,7 @@ Puedes adaptar el entorno a tus preferencias modificando los archivos de configu
 
 # 🔧 Solución de problemas
 
-### Hyprland no aparece en SDDM
+## Hyprland no aparece en SDDM
 
 Comprueba si está instalado:
 
@@ -455,7 +464,7 @@ Comprueba el servicio:
 systemctl status sddm
 ```
 
-### Waybar no inicia
+## Waybar no inicia
 
 Ejecuta Waybar desde una terminal para observar posibles errores:
 
@@ -463,7 +472,7 @@ Ejecuta Waybar desde una terminal para observar posibles errores:
 waybar
 ```
 
-### El Dashboard no aparece
+## Shinobi Dashboard no aparece
 
 Comprueba que Eww esté instalado:
 
@@ -477,9 +486,9 @@ Comprueba los procesos:
 pgrep -a eww
 ```
 
-### No aparece la VPN de HTB
+## No aparece la VPN de Hack The Box
 
-Comprueba la interfaz:
+Comprueba las interfaces:
 
 ```bash
 ip -br addr
@@ -487,7 +496,7 @@ ip -br addr
 
 Si `tun0` no aparece, revisa la conexión OpenVPN.
 
-### No funciona el portapapeles
+## No funciona el portapapeles
 
 Instala el paquete necesario:
 
@@ -495,7 +504,7 @@ Instala el paquete necesario:
 sudo pacman -S --needed wl-clipboard
 ```
 
-### No funciona la captura de pantalla
+## No funciona la captura de pantalla
 
 Comprueba las dependencias:
 
@@ -507,30 +516,34 @@ sudo pacman -S --needed grim slurp
 
 # 🔄 Actualización
 
-Para obtener los últimos cambios:
+Para obtener los últimos cambios del repositorio:
 
 ```bash
 cd ~/shinobi-hypr
 git pull origin main
 ```
 
-La actualización del repositorio no aplica automáticamente todas las configuraciones. Revisa los cambios antes de reemplazar archivos locales o volver a ejecutar el instalador.
+La actualización del repositorio no aplica automáticamente todas las configuraciones.
+
+Revisa los cambios antes de reemplazar archivos locales o volver a ejecutar el instalador.
 
 ---
 
-# 🤝 Contribuciones
+# 🧩 Créditos
 
-SHINOBI-HYPR es un proyecto que puede seguir evolucionando.
+SHINOBI-HYPR integra tecnologías y herramientas desarrolladas por diferentes proyectos.
 
-Si deseas contribuir:
+Agradecimientos a sus respectivos desarrolladores y comunidades:
 
-1. Haz un Fork del repositorio.
-2. Crea una nueva rama.
-3. Realiza tus modificaciones.
-4. Comprueba que los cambios funcionen.
-5. Envía un Pull Request.
-
-Las sugerencias, mejoras y contribuciones son bienvenidas.
+- [Arch Linux](https://archlinux.org/)
+- [Hyprland](https://hypr.land/)
+- [Waybar](https://github.com/Alexays/Waybar)
+- [Eww](https://github.com/elkowar/eww)
+- [Wallust](https://codeberg.org/explosion-mental/wallust)
+- [Rofi](https://github.com/davatorium/rofi)
+- [Kitty](https://sw.kovidgoyal.net/kitty/)
+- [Starship](https://starship.rs/)
+- [Fastfetch](https://github.com/fastfetch-cli/fastfetch)
 
 ---
 
@@ -540,14 +553,16 @@ Las sugerencias, mejoras y contribuciones son bienvenidas.
 
 ### BUILT FOR LINUX. CONFIGURED FOR PRODUCTIVITY.
 
-**Arch Linux · Hyprland · Automation · Cybersecurity**
+**ARCH LINUX · HYPRLAND · AUTOMATION · CYBERSECURITY**
 
 <br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-Dervi--RMX-181717?style=for-the-badge&logo=github)](https://github.com/Dervi-RMX)
 
-[![Repository](https://img.shields.io/badge/PROJECT-SHINOBI--HYPR-7B2CBF?style=for-the-badge&logo=github)](https://github.com/Dervi-RMX/shinobi-hypr)
+[![Project](https://img.shields.io/badge/PROJECT-SHINOBI--HYPR-7B2CBF?style=for-the-badge&logo=github)](https://github.com/Dervi-RMX/shinobi-hypr)
 
-<sub>Made with passion for Linux and cybersecurity.</sub>
+<br>
+
+**Made with passion for Linux and cybersecurity.**
 
 </div>
