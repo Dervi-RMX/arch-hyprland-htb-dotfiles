@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [ -z "$WAYLAND_DISPLAY" ]; then
+    SOCK=$(ls "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n 1)
+    [ -n "$SOCK" ] && export WAYLAND_DISPLAY=$(basename "$SOCK")
+fi
+
 STATE_FILE="$HOME/.cache/shinobi-bar-mode"
 mkdir -p "$HOME/.cache"
 
