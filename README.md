@@ -1,175 +1,133 @@
-# PROMPT COMPLETO — README PROFESIONAL DE SHINOBI-HYPR
+# 🎨 DIRECCIÓN DE DISEÑO — SHINOBI-HYPR README
 
-Actúa como un **desarrollador senior de Arch Linux, especialista en Hyprland, Linux customization, automatización, documentación técnica y diseño de repositorios profesionales en GitHub**.
+Quiero que el README tenga una identidad visual PREMIUM, inspirada en interfaces Cyberpunk, terminales Linux, estética japonesa Shinobi y dashboards de ciberseguridad.
 
-Quiero que trabajes directamente en el repositorio que tengo abierto y crees o actualices su archivo `README.md`.
+**No quiero un documento aburrido, blanco o lleno de texto sin personalidad.**
 
-El proyecto se llama **SHINOBI-HYPR**.
+## 1. Paleta de colores
 
-Tu objetivo es crear un README profesional, moderno, visualmente atractivo, completo y bien organizado, que explique claramente qué es el proyecto, qué herramientas utiliza, qué funcionalidades ofrece y cómo cualquier usuario puede instalarlo y utilizarlo.
+Utiliza una combinación visual basada en:
 
----
+- Negro profundo: `#09090B`
+- Gris oscuro: `#18181B`
+- Gris secundario: `#27272A`
+- Verde neón: `#39FF14`
+- Verde terminal: `#00FF9C`
+- Rojo de acento: `#FF3131`
+- Blanco: `#F4F4F5`
+- Gris de texto: `#A1A1AA`
 
-## 1. Identidad del proyecto
+El verde neón debe ser el color principal de identidad. Utiliza el rojo solamente para pequeños detalles y acentos.
 
-**Nombre:** SHINOBI-HYPR
+## 2. Encabezado espectacular
 
-**Descripción principal:**
+Diseña un encabezado centrado que incluya:
 
-SHINOBI-HYPR es un entorno personalizado basado en Arch Linux y Hyprland, diseñado para combinar productividad, automatización, personalización visual y herramientas orientadas a la ciberseguridad.
-
-No es solamente una configuración visual. Es un ecosistema integrado que reúne herramientas, scripts, paneles, automatizaciones y configuraciones para ofrecer una experiencia Linux completa.
-
-**Tecnologías principales:**
-- Arch Linux
-- Hyprland
-- Wayland
-- Eww
-- Waybar
-- Wallust
-- Kitty
-- Rofi
-- Zsh
-- Starship
-- Fastfetch
-- SwayNC
-- Wlogout
-- Spicetify
-- SDDM
-
----
-
-## 2. Diseño visual del README
-
-Quiero una presentación profesional con estética tecnológica y temática SHINOBI.
-
-Utiliza:
-- Encabezados claros y jerarquizados.
-- Emojis moderados para identificar secciones.
+- Nombre SHINOBI-HYPR.
+- Un símbolo o identidad ninja.
+- Subtítulo tecnológico.
+- Descripción corta.
 - Insignias de tecnologías.
-- Tablas organizadas.
-- Bloques de código correctamente formateados.
-- Imágenes de demostración.
-- Separadores entre secciones.
-- Enlaces funcionales.
-- Una presentación visual coherente.
+- Una separación visual elegante.
 
-El README debe verse bien tanto en GitHub como en dispositivos móviles.
+Utiliza HTML compatible con GitHub Markdown cuando aporte valor.
 
-No utilices párrafos excesivamente largos ni repitas información innecesariamente.
+Ejemplo de estructura:
 
-**Importante:**
-- No incluyas insignias de Open Source.
-- No menciones que el proyecto es de código abierto.
-- No agregues secciones de Contribuciones.
-- No agregues secciones de Créditos.
-- No inventes funcionalidades que no existan en el repositorio.
-
----
-
-## 3. Encabezado principal
-
-Utiliza una presentación similar a esta:
+```html
+<div align="center">
 
 # 🥷 SHINOBI-HYPR
 
-### ARCH LINUX · HYPRLAND · CYBERSECURITY ENVIRONMENT
+### ARCH LINUX · HYPRLAND · CYBERSECURITY
 
-Un ecosistema personalizado de Arch Linux diseñado para productividad, automatización, personalización y ciberseguridad.
+**A powerful Linux environment. Built for productivity.**
 
-Incluye insignias para:
-- Arch Linux
-- Hyprland
-- Wayland
-- Eww Dashboard
-- Hack The Box
+[Arch Linux] [Hyprland] [Wayland] [Hack The Box]
 
-Utiliza las imágenes existentes del proyecto:
+</div>
+```
+
+No utilices insignias inexistentes ni inventes estadísticas.
+
+## 3. Imágenes y presentación
+
+Las capturas de pantalla deben tener protagonismo.
+
+Utiliza las imágenes reales del proyecto:
 
 - `assets/preview2.png`
 - `assets/preview3.png`
 
-No inventes rutas de imágenes. Comprueba que existan antes de utilizarlas.
+Preséntalas centradas, con dimensiones razonables y textos descriptivos.
 
----
+Si es posible, crea una galería visual utilizando tablas HTML compatibles con GitHub.
 
-## 4. Descripción del proyecto
+No generes imágenes falsas ni inventes capturas.
 
-Explica que SHINOBI-HYPR reúne un entorno de escritorio personalizado con diferentes componentes integrados.
+## 4. Insignias y etiquetas
 
-Describe sus objetivos:
+Utiliza insignias de shields.io con colores coherentes.
 
-- Ofrecer una experiencia visual moderna.
-- Facilitar el trabajo diario en Linux.
-- Integrar herramientas de productividad.
-- Automatizar tareas frecuentes.
-- Facilitar el uso de herramientas de ciberseguridad.
-- Proporcionar información del sistema en tiempo real.
-- Permitir cambiar la apariencia mediante diferentes temas.
+Ejemplos:
 
-Deja claro que el proyecto está orientado tanto al uso diario como al aprendizaje y práctica de ciberseguridad.
+```markdown
+![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)
 
----
+![Hyprland](https://img.shields.io/badge/Hyprland-00A4FF?style=for-the-badge)
 
-## 5. Características principales
+![Wayland](https://img.shields.io/badge/Wayland-FFBC00?style=for-the-badge)
 
-Organiza las funcionalidades en una tabla o lista visual.
+![Hack The Box](https://img.shields.io/badge/Hack%20The%20Box-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black)
+```
 
-Incluye únicamente las características que realmente existan en el proyecto:
+Utiliza colores y estilos consistentes.
 
-### Entorno de escritorio
-- Hyprland como compositor Wayland.
-- Configuración personalizada de ventanas.
+## 5. Índice de navegación
+
+Añade una tabla de contenidos visual, con enlaces internos a las secciones.
+
+Debe ser fácil navegar por todo el documento.
+
+## 6. Tarjetas y secciones visuales
+
+Utiliza tablas HTML y Markdown para presentar:
+
+- Características.
+- Tecnologías.
+- Temas.
 - Atajos de teclado.
-- Gestión de espacios de trabajo.
-- Integración con aplicaciones del sistema.
+- Requisitos.
+- Comandos.
+- Estructura del proyecto.
 
-### Shinobi Dashboard
-- Panel desarrollado con Eww.
-- Información del sistema.
-- Reloj y calendario.
-- Monitorización de CPU y RAM.
-- Controles multimedia.
-- Integración con MPRIS.
-- Secciones Dashboard, Media, Performance y Weather.
-- Cierre automático al hacer clic fuera del panel.
+Utiliza iconos y emojis moderados para mejorar la lectura.
 
-### Waybar Dual
-- Barra horizontal superior.
-- Barra lateral vertical.
-- Información del sistema.
-- Estado de conexión VPN.
-- Dirección IP local.
-- Objetivo activo de Hack The Box.
+No conviertas cada párrafo en una tarjeta.
 
-### Personalización visual
-- Seis temas visuales.
-- Wallpapers personalizados.
-- Colores dinámicos mediante Wallust.
-- Sincronización de colores entre aplicaciones.
-- Cursores Bibata y Capitaine.
+## 7. Bloques de código
 
-### Herramientas adicionales
-- Kitty.
-- Rofi.
-- SwayNC.
-- Wlogout.
-- Zsh.
-- Starship.
-- Fastfetch.
-- Spicetify.
-- Spotify.
-- SDDM.
-- Swaylock.
-- Scripts personalizados.
+Los comandos deben aparecer en bloques de código con el lenguaje correspondiente.
 
----
+Ejemplos:
 
-## 6. Sistema de temas
+```bash
+settarget 10.10.11.100
+```
 
-Crea una sección dedicada a explicar el sistema de personalización.
+```bash
+ip -br addr
+```
 
-El proyecto incluye seis temas visuales:
+```bash
+git pull origin main
+```
+
+Mantén los comandos fáciles de copiar y ejecutar.
+
+## 8. Identidad de los seis temas
+
+Presenta los seis temas en una galería visual:
 
 - King
 - Minato
@@ -178,374 +136,27 @@ El proyecto incluye seis temas visuales:
 - Kimetsu
 - Goku
 
-Explica que los temas permiten personalizar la apariencia del entorno y que Wallust ayuda a sincronizar los colores entre los componentes compatibles.
+Si existen capturas individuales de cada tema, utilízalas. Si no existen, muestra los nombres de manera elegante sin inventar imágenes.
 
-Incluye el atajo:
+## 9. Separadores y jerarquía
 
-`Super + W`
+Utiliza separadores `---` entre las secciones principales.
 
-Este atajo permite abrir el selector de temas.
+Mantén una jerarquía consistente:
 
-No inventes nombres adicionales ni funcionalidades de cambio automático que no estén implementadas.
+- Título principal.
+- Secciones principales.
+- Subsecciones.
+- Texto descriptivo.
+- Tablas y bloques de código.
 
----
+Evita títulos demasiado grandes o exceso de emojis.
 
-## 7. Shinobi Dashboard
+## 10. Pie de página
 
-Crea una sección completa dedicada al Dashboard.
+Crea un cierre visual centrado:
 
-Explica que utiliza Eww y que centraliza diferentes elementos del sistema.
-
-Incluye sus apartados:
-
-| Apartado | Función |
-|---|---|
-| Dashboard | Información general |
-| Media | Controles multimedia |
-| Performance | Rendimiento del sistema |
-| Weather | Información meteorológica |
-
-Incluye:
-- Reloj.
-- Calendario.
-- CPU.
-- RAM.
-- Controles de audio.
-- Integración MPRIS.
-- Cierre al hacer clic fuera.
-
-Atajos:
-
-- `Super + Z`
-- `Alt + Z`
-- Clic en el icono de Arch.
-
-Comprueba que estos atajos estén presentes en la configuración antes de documentarlos como definitivos.
-
----
-
-## 8. Waybar Dual
-
-Explica que el entorno cuenta con dos presentaciones de Waybar:
-
-- Horizontal.
-- Vertical.
-
-Incluye el atajo:
-
-`Super + B`
-
-Documenta los indicadores disponibles:
-
-- Información del sistema.
-- Estado de VPN.
-- Dirección IP local.
-- Objetivo activo de Hack The Box.
-
----
-
-## 9. Integración con Hack The Box
-
-Esta sección es especialmente importante.
-
-Explica que SHINOBI-HYPR incorpora funciones para facilitar el trabajo durante laboratorios de pentesting y máquinas de Hack The Box.
-
-Documenta los comandos disponibles, verificándolos en los scripts reales del repositorio.
-
-Ejemplos de uso:
-
-```bash
-settarget 10.10.11.100
-```
-
-```bash
-settarget 10.10.11.100 MACHINE
-```
-
-```bash
-settarget
-```
-
-```bash
-cleartarget
-```
-
-Explica que permiten gestionar el objetivo activo y mostrar información relacionada con la máquina en los componentes compatibles del entorno.
-
-Documenta también cómo consultar la interfaz VPN:
-
-```bash
-ip addr show tun0
-```
-
-```bash
-ip -br addr
-```
-
-No afirmes que el proyecto establece conexiones VPN automáticamente si no existe esa funcionalidad.
-
----
-
-## 10. Ecosistema tecnológico
-
-Crea una tabla con las herramientas utilizadas y su función.
-
-Incluye:
-
-| Herramienta | Función |
-|---|---|
-| Arch Linux | Sistema operativo |
-| Hyprland | Compositor Wayland |
-| Eww | Dashboard |
-| Waybar | Panel del sistema |
-| Wallust | Colores dinámicos |
-| Kitty | Terminal |
-| Rofi | Lanzador de aplicaciones |
-| SwayNC | Notificaciones |
-| Wlogout | Menú de salida |
-| Zsh | Shell |
-| Starship | Prompt |
-| Fastfetch | Información del sistema |
-| SDDM | Gestor de inicio de sesión |
-| Swaylock | Bloqueo de pantalla |
-| Spicetify | Personalización de Spotify |
-| Spotify | Reproductor multimedia |
-| Bibata / Capitaine | Cursores |
-
----
-
-## 11. Atajos de teclado
-
-Crea una tabla organizada de atajos.
-
-Incluye los siguientes:
-
-| Atajo | Acción |
-|---|---|
-| Super + Z | Abrir Dashboard |
-| Alt + Z | Abrir Dashboard alternativo |
-| Super + B | Cambiar Waybar |
-| Super + W | Selector de temas |
-| Super + Return | Abrir Kitty |
-| Super + E | Abrir Yazi |
-| Super + Q | Cerrar ventana |
-| Super + L | Bloquear pantalla |
-| Super + Shift + S | Captura de pantalla |
-| Super + 1–9 | Cambiar espacio de trabajo |
-
-Comprueba cada atajo en la configuración real de Hyprland.
-
-Si alguno no coincide, documenta el valor real encontrado en los archivos.
-
----
-
-## 12. Requisitos de instalación
-
-Documenta los requisitos:
-
-- Arch Linux.
-- Conexión a Internet.
-- Usuario normal con permisos sudo.
-- Git.
-- Curl.
-
-Aclara que el proyecto está diseñado principalmente para Arch Linux y que no se garantiza compatibilidad con otras distribuciones.
-
----
-
-## 13. Instalación
-
-Crea una guía paso a paso que sea fácil de seguir.
-
-### Instalación rápida
-
-Incluye el siguiente comando:
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Dervi-RMX/shinobi-hypr/main/install.sh)
-```
-
-### Instalación manual
-
-```bash
-sudo pacman -S --needed git curl
-```
-
-```bash
-git clone https://github.com/Dervi-RMX/shinobi-hypr.git
-```
-
-```bash
-cd shinobi-hypr
-```
-
-Antes de ejecutar el instalador, recomienda inspeccionarlo:
-
-```bash
-less install.sh
-```
-
-Validar su sintaxis:
-
-```bash
-bash -n install.sh
-```
-
-Dar permisos y ejecutar:
-
-```bash
-chmod +x install.sh
-./install.sh
-```
-
-Finalmente, reiniciar el equipo si el instalador lo requiere.
-
-### Advertencias importantes
-
-Incluye recomendaciones:
-
-- Realizar una copia de seguridad de las configuraciones actuales.
-- Revisar los paquetes que instalará el script.
-- Comprobar los cambios relacionados con SDDM y Zsh.
-- Ejecutar el instalador desde un usuario normal con permisos sudo.
-- No ejecutar el instalador como root.
-- Revisar cualquier modificación antes de sobrescribir configuraciones existentes.
-
-No afirmes que la instalación es completamente reversible o libre de riesgos si no está implementado.
-
----
-
-## 14. Estructura del repositorio
-
-Inspecciona el repositorio y documenta su estructura real.
-
-Como referencia, contempla directorios como:
-
-```text
-shinobi-hypr/
-├── assets/
-├── eww/
-├── fastfetch/
-├── hypr/
-├── icons/
-├── kitty/
-├── rofi/
-├── scripts/
-├── sddm/
-├── spicetify/
-├── spotify/
-├── starship/
-├── swaylock-themes/
-├── swaync/
-├── waybar/
-├── wlogout/
-├── zsh/
-├── .gitignore
-├── README.md
-└── install.sh
-```
-
-Comprueba los nombres reales y no agregues carpetas que no existan.
-
-Añade una breve explicación de la función de cada directorio.
-
----
-
-## 15. Personalización
-
-Incluye una sección explicando dónde se pueden modificar los principales componentes.
-
-Por ejemplo:
-
-- Configuración de Hyprland.
-- Configuración de Waybar.
-- Configuración de Eww.
-- Configuración de Kitty.
-- Configuración de Rofi.
-- Configuración de Zsh.
-- Temas visuales.
-- Wallpapers.
-- Iconos y cursores.
-- Scripts.
-
-Utiliza las rutas reales del repositorio.
-
----
-
-## 16. Solución de problemas
-
-Crea una sección práctica con problemas frecuentes y comandos para diagnosticarlos.
-
-### Hyprland
-
-```bash
-pacman -Q hyprland
-```
-
-### SDDM
-
-```bash
-systemctl status sddm
-```
-
-### Waybar
-
-```bash
-waybar
-```
-
-### Eww
-
-```bash
-command -v eww
-```
-
-```bash
-pgrep -a eww
-```
-
-### VPN
-
-```bash
-ip -br addr
-```
-
-### Portapapeles
-
-```bash
-sudo pacman -S --needed wl-clipboard
-```
-
-### Capturas de pantalla
-
-```bash
-sudo pacman -S --needed grim slurp
-```
-
-Explica brevemente para qué sirve cada comprobación o instalación.
-
----
-
-## 17. Actualización del entorno
-
-Incluye una sección para actualizar el repositorio:
-
-```bash
-cd ~/shinobi-hypr
-git pull origin main
-```
-
-Aclara que descargar cambios del repositorio no significa que todas las configuraciones locales se actualicen automáticamente.
-
-Recomienda revisar los cambios antes de sobrescribir configuraciones existentes o volver a ejecutar el instalador.
-
----
-
-## 18. Cierre visual
-
-El README debe finalizar con un bloque centrado, elegante y coherente con la identidad del proyecto.
-
-Utiliza:
+<div align="center">
 
 # 🥷 SHINOBI-HYPR
 
@@ -553,63 +164,40 @@ Utiliza:
 
 **ARCH LINUX · HYPRLAND · AUTOMATION · CYBERSECURITY**
 
-Incluye insignias para:
-
-- GitHub del desarrollador: `https://github.com/Dervi-RMX`
-- Repositorio: `https://github.com/Dervi-RMX/shinobi-hypr`
-
-Termina con:
+[GitHub](https://github.com/Dervi-RMX) · [SHINOBI-HYPR](https://github.com/Dervi-RMX/shinobi-hypr)
 
 **Made with passion for Linux and cybersecurity.**
 
-No agregues ninguna sección después de este bloque.
+</div>
 
----
+## 11. Reglas de diseño obligatorias
 
-## 19. Reglas obligatorias de trabajo
+- Diseño oscuro y tecnológico.
+- Identidad verde neón.
+- Estética Cyberpunk / Shinobi.
+- Presentación profesional.
+- Excelente organización.
+- Imágenes reales.
+- Insignias coherentes.
+- Tablas bien diseñadas.
+- Compatible con GitHub.
+- Responsive cuando se utilice HTML.
+- Nada de colores aleatorios.
+- Nada de decoración excesiva.
+- Nada de contenido repetido.
 
-Antes de escribir el README:
+**IMPORTANTE:** GitHub Markdown no permite aplicar libremente colores CSS a todo el texto. Utiliza insignias, imágenes, tablas y HTML compatible para conseguir el efecto visual sin romper la visualización del README.
 
-1. Inspecciona el repositorio completo.
-2. Comprueba los directorios y archivos existentes.
-3. Revisa el instalador `install.sh`.
-4. Comprueba los comandos personalizados.
-5. Verifica los atajos de Hyprland.
-6. Comprueba las imágenes disponibles.
-7. No inventes funciones, comandos ni rutas.
-8. No elimines archivos ni modifiques configuraciones del sistema.
-9. No alteres el funcionamiento del proyecto.
-10. Trabaja únicamente en la documentación solicitada.
+## 12. Restricciones de contenido
 
-Si encuentras diferencias entre esta descripción y el código real, utiliza la información del código real.
+No incluyas:
+- Sección de Contribuciones.
+- Sección de Créditos.
+- Insignias Open Source.
+- Referencias a código abierto.
+- Secciones vacías.
+- Funcionalidades inventadas.
 
-## 20. Resultado esperado
+Conserva toda la documentación técnica, instalación, comandos, estructura y características reales del proyecto.
 
-Quiero un `README.md` completo, profesional y listo para publicarse en GitHub.
-
-Debe permitir que una persona que nunca ha utilizado SHINOBI-HYPR pueda:
-
-- Entender qué es el proyecto.
-- Conocer sus funcionalidades.
-- Identificar las herramientas utilizadas.
-- Comprender los atajos.
-- Instalar el entorno.
-- Personalizarlo.
-- Utilizar sus funciones de Hack The Box.
-- Solucionar problemas básicos.
-- Actualizar su instalación.
-
-**No entregues un README básico o resumido. Quiero documentación completa, bien estructurada y visualmente atractiva.**
-
-**RESTRICCIONES FINALES:**
-
-- No incluir sección de Contribuciones.
-- No incluir sección de Créditos.
-- No incluir insignias Open Source.
-- No mencionar código abierto.
-- No inventar características.
-- No dejar secciones vacías.
-- No repetir información.
-- No modificar archivos fuera de `README.md`.
-
-Al terminar, muestra el contenido final del README y un resumen breve de los cambios realizados.
+**RESULTADO:** Quiero que SHINOBI-HYPR tenga un README que parezca la presentación oficial de una distribución o entorno Linux profesional, con una identidad visual propia y una estética inolvidable.
