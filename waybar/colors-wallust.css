@@ -1,7 +1,10 @@
-@define-color bg        rgba(9, 9, 11, 0.90);
-@define-color bg-alt    rgba(24, 24, 27, 0.94);
-@define-color fg        #f4f4f5;
-@define-color accent    #dc2626;
-@define-color accent2   #f97316;
-@define-color border    #ef4444;
-@define-color urgent    #fca5a5;
+@define-color background #07111a;
+@define-color foreground #f0f9ff;
+@define-color color0 #0c1d2c;
+@define-color color1 #0ea5e9;
+@define-color color2 #38bdf8;
+@define-color color3 #7dd3fc;
+@define-color color4 #10b981;
+@define-color color5 #34d399;
+@define-color color6 #0284c7;
+@define-color color7 #bae6fd;

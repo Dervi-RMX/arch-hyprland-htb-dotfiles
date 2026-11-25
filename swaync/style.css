@@ -4,39 +4,39 @@
 }
 
 .control-center {
-  background: rgba(9, 9, 11, 0.9);
-  border: 2px solid #ef4444;
+  background: rgba(14, 16, 22, 0.9);
+  border: 2px solid #58e1ff;
   border-radius: 18px;
-  color: #f4f4f5;
+  color: #eaeaea;
   padding: 14px;
 }
 
 .widget-title {
-  color: #ef4444;
+  color: #58e1ff;
   font-size: 1.05rem;
   margin-bottom: 10px;
 }
 
 .widget-title > button {
-  background: rgba(239, 68, 68, 0.18);
-  color: #f4f4f5;
-  border: 1px solid #ef4444;
+  background: rgba(88, 225, 255, 0.18);
+  color: #eaeaea;
+  border: 1px solid #58e1ff;
   border-radius: 10px;
   padding: 4px 12px;
 }
 
 .widget-title > button:hover {
-  background: #ef4444;
-  color: rgba(9, 9, 11, 0.90);
+  background: #58e1ff;
+  color: #0e1016;
 }
 
 .widget-dnd {
-  background: rgba(9, 9, 11, 0.96);
-  border: 1px solid #ef4444;
+  background: rgba(14, 16, 22, 0.96);
+  border: 1px solid #58e1ff;
   border-radius: 12px;
   padding: 8px 12px;
   margin-bottom: 10px;
-  color: #f4f4f5;
+  color: #eaeaea;
 }
 
 .widget-dnd > switch {
@@ -45,30 +45,30 @@
 }
 
 .widget-dnd > switch:checked {
-  background: #ef4444;
+  background: #58e1ff;
 }
 
 .widget-mpris {
-  background: rgba(9, 9, 11, 0.96);
-  border: 1px solid #ef4444;
+  background: rgba(14, 16, 22, 0.96);
+  border: 1px solid #38bdf8;
   border-radius: 14px;
   padding: 8px;
   margin-bottom: 10px;
 }
 
 .notification {
-  background: rgba(9, 9, 11, 0.96);
-  border: 1px solid #ef4444;
-  border-left: 4px solid #ef4444;
+  background: rgba(14, 16, 22, 0.96);
+  border: 1px solid #58e1ff;
+  border-left: 4px solid #58e1ff;
   border-radius: 14px;
   padding: 10px 12px;
 }
 
 .summary {
-  color: #ef4444;
+  color: #58e1ff;
   font-weight: 700;
 }
 
 .body {
-  color: #f4f4f5;
+  color: #eaeaea;
 }

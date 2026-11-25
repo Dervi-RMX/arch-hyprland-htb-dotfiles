@@ -1,4 +1,4 @@
-@import url("/home/dervi/.config/waybar/colors-wallust.css");
+@import url("$HOME/.config/waybar/colors-wallust.css");
 
 * {
     background-image: none;
@@ -33,20 +33,20 @@ button:hover {
     outline-style: none;
 }
 
-#lock { background-image: url("/home/dervi/.config/wlogout/icons/lock.png"); }
-#lock:focus, #lock:hover { background-image: url("/home/dervi/.config/wlogout/icons/lock-hover.png"); }
+#lock { background-image: url("$HOME/.config/wlogout/icons/lock.png"); }
+#lock:focus, #lock:hover { background-image: url("$HOME/.config/wlogout/icons/lock-hover.png"); }
 
-#reboot { background-image: url("/home/dervi/.config/wlogout/icons/reboot.png"); }
-#reboot:focus, #reboot:hover { background-image: url("/home/dervi/.config/wlogout/icons/reboot-hover.png"); }
+#reboot { background-image: url("$HOME/.config/wlogout/icons/reboot.png"); }
+#reboot:focus, #reboot:hover { background-image: url("$HOME/.config/wlogout/icons/reboot-hover.png"); }
 
-#shutdown { background-image: url("/home/dervi/.config/wlogout/icons/shutdown.png"); }
-#shutdown:focus, #shutdown:hover { background-image: url("/home/dervi/.config/wlogout/icons/shutdown-hover.png"); }
+#shutdown { background-image: url("$HOME/.config/wlogout/icons/shutdown.png"); }
+#shutdown:focus, #shutdown:hover { background-image: url("$HOME/.config/wlogout/icons/shutdown-hover.png"); }
 
-#logout { background-image: url("/home/dervi/.config/wlogout/icons/logout.png"); }
-#logout:focus, #logout:hover { background-image: url("/home/dervi/.config/wlogout/icons/logout-hover.png"); }
+#logout { background-image: url("$HOME/.config/wlogout/icons/logout.png"); }
+#logout:focus, #logout:hover { background-image: url("$HOME/.config/wlogout/icons/logout-hover.png"); }
 
-#suspend { background-image: url("/home/dervi/.config/wlogout/icons/suspend.png"); }
-#suspend:focus, #suspend:hover { background-image: url("/home/dervi/.config/wlogout/icons/suspend-hover.png"); }
+#suspend { background-image: url("$HOME/.config/wlogout/icons/suspend.png"); }
+#suspend:focus, #suspend:hover { background-image: url("$HOME/.config/wlogout/icons/suspend-hover.png"); }
 
-#hibernate { background-image: url("/home/dervi/.config/wlogout/icons/hibernate.png"); }
-#hibernate:focus, #hibernate:hover { background-image: url("/home/dervi/.config/wlogout/icons/hibernate-hover.png"); }
+#hibernate { background-image: url("$HOME/.config/wlogout/icons/hibernate.png"); }
+#hibernate:focus, #hibernate:hover { background-image: url("$HOME/.config/wlogout/icons/hibernate-hover.png"); }
