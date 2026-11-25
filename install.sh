@@ -262,3 +262,25 @@ fi
 cp -f "$SCRIPT_DIR/scripts/shinobi-bar-toggle" "$SCRIPT_DIR/scripts/wallpaper-picker" "$HOME/.local/bin/" 2>/dev/null && chmod +x "$HOME/.local/bin/shinobi-bar-toggle" "$HOME/.local/bin/wallpaper-picker"
 mkdir -p "$HOME/.cache" && [ ! -f "$HOME/.cache/shinobi-bar-mode" ] && echo "left" > "$HOME/.cache/shinobi-bar-mode"
 cp -f "$SCRIPT_DIR/waybar/config-vertical.jsonc" "$SCRIPT_DIR/waybar/style-vertical.css" "$HOME/.config/waybar/" 2>/dev/null || true
+
+# --- SHINOBI ZERO-TOUCH DASHBOARD & VERTICAL BAR ---
+if ! command -v eww >/dev/null 2>&1; then
+    if ! command -v yay >/dev/null 2>&1 && ! command -v paru >/dev/null 2>&1; then
+        TMP_YAY=$(mktemp -d)
+        git clone https://aur.archlinux.org/yay-bin.git "$TMP_YAY/yay-bin" && (cd "$TMP_YAY/yay-bin" && makepkg -si --noconfirm)
+        rm -rf "$TMP_YAY"
+    fi
+    if command -v yay >/dev/null 2>&1; then
+        yay -S --needed --noconfirm eww
+    elif command -v paru >/dev/null 2>&1; then
+        paru -S --needed --noconfirm eww
+    fi
+fi
+
+mkdir -p "$HOME/.config/waybar" "$HOME/.config/eww" "$HOME/.local/bin" "$HOME/.cache"
+cp -rf "${REPO_DIR:-$SCRIPT_DIR}/waybar/"* "$HOME/.config/waybar/" 2>/dev/null || true
+cp -rf "${REPO_DIR:-$SCRIPT_DIR}/eww/"* "$HOME/.config/eww/" 2>/dev/null || true
+cp -f "${REPO_DIR:-$SCRIPT_DIR}/scripts/"* "$HOME/.local/bin/" 2>/dev/null || true
+chmod +x "$HOME/.local/bin/"*
+[ ! -f "$HOME/.cache/shinobi-bar-mode" ] && echo "left" > "$HOME/.cache/shinobi-bar-mode"
+"$HOME/.local/bin/shinobi-dashboard-toggle" --sync-only 2>/dev/null || true

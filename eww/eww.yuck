@@ -112,4 +112,5 @@
   :geometry (geometry :x "0px" :y "0px" :width "100%" :height "100%" :anchor "center")
   :stacking "fg"
   :focusable false
-  (eventbox :onclick "eww -c ~/.config/eww close shinobi_closer shinobi_dash"))
+  (eventbox :onclick "eww -c ~/.config/eww close shinobi_closer shinobi_dash"
+    (box :class "closer-bg")))

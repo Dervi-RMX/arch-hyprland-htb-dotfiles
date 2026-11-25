@@ -90,3 +90,7 @@
 .media-controls button:hover { background-color: rgba($accent, 0.25); }
 .media-controls-lg button { font-size: 22px; color: $fg; padding: 8px 14px; border-radius: 12px; }
 .media-controls-lg button.play-pill { background-color: $accent; color: #0b0b12; }
+
+.closer-bg {
+  background-color: rgba(0, 0, 0, 0.01);
+}
