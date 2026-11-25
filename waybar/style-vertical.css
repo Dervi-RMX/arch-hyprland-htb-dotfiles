@@ -1,44 +1,117 @@
-@import url("style.css");
+@import url("colors-wallust.css");
+
+* {
+    font-family: "JetBrainsMono Nerd Font", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    min-width: 0;
+    min-height: 0;
+}
 
 window#waybar {
-    border-radius: 16px;
+    background-color: alpha(@bg, 0.88);
+    border: 1.5px solid @border;
+    border-radius: 18px;
+    color: @fg;
 }
 
-.modules-left,
-.modules-center,
+.modules-left {
+    margin-top: 8px;
+}
+
 .modules-right {
-    margin: 5px 4px;
-    padding: 6px 0;
-    border-radius: 13px;
+    margin-bottom: 8px;
 }
 
-#custom-launcher {
-    font-size: 16px;
-    padding: 4px 0 8px 0;
-}
-
-#workspaces button {
-    padding: 5px 0;
-    margin: 2px 5px;
-    border-radius: 8px;
-    font-size: 12px;
-}
-
-#clock {
-    font-size: 12px;
-    padding: 4px 0;
-}
-
+#custom-launcher,
 #custom-spotify-icon,
 #custom-vpn-icon,
 #pulseaudio,
 #cpu,
-#memory {
-    padding: 5px 0;
+#memory,
+#custom-power {
+    background-color: alpha(@fg, 0.07);
+    border: 1px solid alpha(@border, 0.28);
+    border-radius: 11px;
+    min-width: 32px;
+    min-height: 32px;
+    margin: 3px 6px;
+    padding: 0;
+    color: @fg;
+    transition: all 0.2s ease;
+}
+
+#custom-launcher:hover,
+#custom-spotify-icon:hover,
+#custom-vpn-icon:hover,
+#pulseaudio:hover,
+#cpu:hover,
+#memory:hover {
+    background-color: alpha(@border, 0.28);
+    border-color: @border;
+}
+
+#custom-launcher {
+    color: @border;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+#workspaces {
+    background-color: alpha(@fg, 0.05);
+    border: 1px solid alpha(@border, 0.22);
+    border-radius: 12px;
+    margin: 2px 6px;
+    padding: 4px 0;
+}
+
+#workspaces button {
+    min-width: 26px;
+    min-height: 26px;
+    margin: 2px 3px;
+    padding: 0;
+    border-radius: 8px;
+    font-size: 12px;
+    color: alpha(@fg, 0.65);
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+#workspaces button:hover {
+    background-color: alpha(@border, 0.22);
+    color: @fg;
+}
+
+#workspaces button.active {
+    background-color: @border;
+    color: @bg;
+    font-weight: 800;
+}
+
+#clock {
+    background-color: alpha(@border, 0.15);
+    border: 1px solid alpha(@border, 0.45);
+    border-radius: 11px;
+    min-width: 32px;
+    margin: 4px 6px;
+    padding: 7px 0;
+    font-size: 12px;
+    line-height: 1.15;
+    color: @border;
+}
+
+#custom-spotify-icon {
+    color: #22c55e;
 }
 
 #custom-power {
-    padding: 6px 0 4px 0;
-    margin: 4px 5px 0 5px;
-    border-radius: 8px;
+    color: #ef4444;
+    border-color: alpha(#ef4444, 0.35);
+    margin-top: 6px;
+}
+
+#custom-power:hover {
+    background-color: #ef4444;
+    color: #ffffff;
 }
