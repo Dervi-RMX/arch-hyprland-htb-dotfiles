@@ -1,18 +1,25 @@
 {
     "layer": "top",
     "position": "left",
+    "width": 46,
     "margin-top": 10,
+    "margin-bottom": 10,
     "margin-left": 8,
     "margin-right": 0,
-    "spacing": 8,
+    "spacing": 0,
     "modules-left": [
-        "custom/launcher"
+        "custom/launcher",
+        "hyprland/workspaces"
     ],
     "modules-center": [
         "clock"
     ],
     "modules-right": [
+        "custom/spotify-icon",
+        "custom/vpn-icon",
         "pulseaudio",
+        "cpu",
+        "memory",
         "custom/power"
     ],
     "custom/launcher": {
@@ -20,45 +27,6 @@
         "on-click": "bash -c 'env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) pkill -x rofi || env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) rofi -show drun'",
         "tooltip": true,
         "tooltip-format": "Aplicaciones (Rofi)"
-    },
-    "custom/terminal": {
-        "format": "󰆍",
-        "on-click": "bash -c 'env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) kitty'",
-        "tooltip": true,
-        "tooltip-format": "Terminal (Kitty)"
-    },
-    "custom/files": {
-        "format": "󰉋",
-        "on-click": "bash -c 'env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) kitty -e yazi'",
-        "tooltip": true,
-        "tooltip-format": "Explorador de archivos (Yazi)"
-    },
-    "custom/wallpaper": {
-        "format": "󰋩",
-        "on-click": "bash -c 'env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) pkill -x rofi || env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) ~/.local/bin/wallpaper-picker'",
-        "tooltip": true,
-        "tooltip-format": "Cambiar Wallpaper (Super + W)"
-    },
-    "clock": {
-        "format": "{:%H\n%M}",
-        "tooltip-format": "<tt>{calendar}</tt>"
-    },
-    "custom/spotify-prev": {
-        "format": "󰒮",
-        "on-click": "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus playerctl -p spotify previous",
-        "tooltip": false
-    },
-    "custom/spotify": {
-        "exec": "~/.config/waybar/scripts/spotify-status.sh",
-        "interval": 1,
-        "on-click": "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus playerctl -p spotify play-pause",
-        "on-click-right": "~/.local/bin/toggle-spotify",
-        "tooltip": true
-    },
-    "custom/spotify-next": {
-        "format": "󰒭",
-        "on-click": "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus playerctl -p spotify next",
-        "tooltip": false
     },
     "hyprland/workspaces": {
         "format": "{id}",
@@ -73,66 +41,49 @@
             ]
         }
     },
-    "custom/htb-vpn": {
-        "exec": "~/.config/waybar/scripts/htb-vpn.sh",
-        "return-type": "json",
+    "clock": {
+        "format": "{:%H\n%M}",
+        "tooltip-format": "{:%Y-%m-%d | %I:%M %p}"
+    },
+    "custom/spotify-icon": {
+        "format": "",
+        "exec": "playerctl -p spotify metadata --format '{{artist}} - {{title}}' 2>/dev/null || echo 'Spotify'",
         "interval": 5,
-        "on-click": "ip -4 addr show tun0 2>/dev/null | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' | tr -d '\\n' | wl-copy"
+        "on-click": "playerctl -p spotify play-pause",
+        "tooltip": true
     },
-    "custom/htb-target": {
-        "exec": "bash -c 'if [ -s ~/.cache/htb-target ]; then printf \"{\\\"text\\\": \\\"󰓾 %s\\\", \\\"class\\\": \\\"active\\\"}\" \"$(cat ~/.cache/htb-target)\"; else printf \"{\\\"text\\\": \\\"󰓾 No Target\\\", \\\"class\\\": \\\"inactive\\\"}\"; fi'",
-        "return-type": "json",
-        "interval": 2,
-        "signal": 8,
-        "on-click": "bash -c '[ -s ~/.cache/htb-target ] && awk \"{print \\$1}\" ~/.cache/htb-target | tr -d \"\\n\" | wl-copy && notify-send \"Target\" \"IP copiada\"'",
-        "tooltip": false
-    },
-    "network": {
-        "format-wifi": "  {ipaddr}",
-        "format-ethernet": "󰈀  {ipaddr}",
-        "format-disconnected": "󰤮  Offline",
-        "tooltip-format": "Interfaz: {ifname}\nIP Local: {ipaddr}/{cidr}\nGateway: {gwaddr}\n(Clic para copiar IP)",
-        "on-click": "ip -4 route get 1.1.1.1 2>/dev/null | grep -oP \"src \\K[0-9.]+\" | tr -d \"\\n\" | wl-copy"
-    },
-    "custom/notifications": {
-        "format": "",
-        "on-click": "swaync-client -t -sw",
-        "tooltip": false
+    "custom/vpn-icon": {
+        "format": "󰖂",
+        "exec": "ip -4 addr show tun0 2>/dev/null | grep -oP '(?<=inet\\s)\\d+(\\.\\d+){3}' || echo 'Sin VPN'",
+        "interval": 5,
+        "tooltip": true
     },
     "pulseaudio": {
-        "format": "  {volume}%",
-        "format-muted": "",
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        "format": "{icon}",
+        "format-muted": "󰖁",
+        "format-icons": {
+            "default": [
+                "󰕿",
+                "󰖀",
+                "󰕾"
+            ]
+        },
+        "on-click": "pavucontrol",
+        "tooltip-format": "Volumen: {volume}%"
+    },
+    "cpu": {
+        "format": "",
+        "interval": 2,
+        "tooltip-format": "CPU: {usage}%"
+    },
+    "memory": {
+        "format": "",
+        "interval": 3,
+        "tooltip-format": "RAM: {percentage}%"
     },
     "custom/power": {
         "format": "",
         "on-click": "pkill -x wlogout || wlogout -b 6",
         "tooltip": false
-    },
-    "cpu": {
-        "interval": 3,
-        "format": "",
-        "tooltip": true,
-        "tooltip-format": "Uso de CPU: {usage}% ({avg_frequency} GHz)"
-    },
-    "memory": {
-        "interval": 3,
-        "format": "",
-        "tooltip": true,
-        "tooltip-format": "RAM: {used:0.1f} GiB / {total:0.1f} GiB ({percentage}%)\nSwap: {swapUsed:0.1f} GiB / {swapTotal:0.1f} GiB"
-    },
-    "tray": {
-        "icon-size": 16,
-        "spacing": 8
-    },
-    "wlr/taskbar": {
-        "format": "{icon}",
-        "icon-size": 16,
-        "icon-theme": "Papirus-Dark",
-        "tooltip-format": "{title}",
-        "on-click": "activate",
-        "on-click-middle": "close"
-    },
-    "width": 46,
-    "margin-bottom": 10
+    }
 }
