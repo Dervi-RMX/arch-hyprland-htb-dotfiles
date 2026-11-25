@@ -127,7 +127,10 @@ fi
 [ -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" ] && cp -f "$HOME/.config/hypr/hyprlock-themes/${THEME}.conf" "$HOME/.config/hypr/hyprlock.conf"
 
 # 8. Recargar Waybar
-pkill -SIGUSR2 waybar 2>/dev/null || (pkill -x waybar; waybar >/dev/null 2>&1 &)
+$HOME/.local/bin/shinobi-bar-toggle --reload
+else
+    setsid -f waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" >/dev/null 2>&1
+fi)
 
 # 9. Sincronizar Spotify
 if command -v spicetify >/dev/null 2>&1; then
