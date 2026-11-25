@@ -25,9 +25,10 @@
     ],
     "custom/launcher": {
         "format": "󰣇",
-        "on-click": "bash -c 'env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) pkill -x rofi || env WAYLAND_DISPLAY=$(ls /run/user/$(id -u)/wayland-* 2>/dev/null | grep -v \\.lock | head -n 1 | xargs basename) HYPRLAND_INSTANCE_SIGNATURE=$(ls -1 /run/user/$(id -u)/hypr/ 2>/dev/null | head -n 1) rofi -show drun'",
+        "on-click": "~/.local/bin/shinobi-dashboard-toggle",
         "tooltip": true,
-        "tooltip-format": "Aplicaciones (Rofi)"
+        "tooltip-format": "Aplicaciones (Rofi)",
+        "on-click-right": "rofi -show drun"
     },
     "hyprland/workspaces": {
         "format": "{id}",

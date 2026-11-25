@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+if [ -z "$WAYLAND_DISPLAY" ]; then
+    SOCK=$(ls "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n 1)
+    [ -n "$SOCK" ] && export WAYLAND_DISPLAY=$(basename "$SOCK")
+fi
+
+EWW_DIR="$HOME/.config/eww"
+WALL_CSS="$HOME/.config/waybar/colors-wallust.css"
+
+BG=$(grep -Po '@define-color\s+bg\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "rgba(12, 14, 20, 0.92)")
+BG_ALT=$(grep -Po '@define-color\s+bg-alt\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "rgba(22, 26, 36, 0.95)")
+FG=$(grep -Po '@define-color\s+fg\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "#f8fafc")
+ACCENT=$(grep -Po '@define-color\s+accent\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "#10b981")
+ACCENT2=$(grep -Po '@define-color\s+accent2\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "#f97316")
+BORDER=$(grep -Po '@define-color\s+border\s+\K[^;]+' "$WALL_CSS" 2>/dev/null || echo "#34d399")
+
+cat << SCSS > "$EWW_DIR/_colors.scss"
+\$bg: $BG;
+\$bg-alt: $BG_ALT;
+\$fg: $FG;
+\$accent: $ACCENT;
+\$accent2: $ACCENT2;
+\$border: $BORDER;
+SCSS
+
+if [ "$1" = "--sync-only" ]; then
+    eww -c "$EWW_DIR" reload 2>/dev/null || true
+    exit 0
+fi
+
+pgrep -x eww >/dev/null || eww -c "$EWW_DIR" daemon
+if eww -c "$EWW_DIR" active-windows | grep -q "shinobi_dash"; then
+    eww -c "$EWW_DIR" close shinobi_dash
+else
+    eww -c "$EWW_DIR" open shinobi_dash
+fi

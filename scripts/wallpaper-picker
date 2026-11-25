@@ -128,6 +128,7 @@ fi
 
 # 8. Recargar Waybar
 $HOME/.local/bin/shinobi-bar-toggle --reload
+~/.local/bin/shinobi-dashboard-toggle --sync-only &
 else
     setsid -f waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" >/dev/null 2>&1
 fi)

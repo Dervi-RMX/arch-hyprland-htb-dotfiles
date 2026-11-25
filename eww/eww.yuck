@@ -1,0 +1,108 @@
+(defvar active_tab "dashboard")
+
+(defpoll hour :interval "10s" "date +%H")
+(defpoll minute :interval "10s" "date +%M")
+(defpoll uptime_str :interval "30s" "uptime -p | sed 's/up //'")
+(defpoll cpu_val :interval "2s" "top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}'")
+(defpoll ram_val :interval "3s" "free | awk '/Mem:/ {printf \"%.0f\", $3/$2 * 100}'")
+(defpoll vol_val :interval "1s" "pamixer --get-volume 2>/dev/null || wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}'")
+(defpoll song_title :interval "2s" "playerctl metadata title 2>/dev/null || echo 'Sin reproducción'")
+(defpoll song_artist :interval "2s" "playerctl metadata artist 2>/dev/null || echo 'Spotify / Media'")
+(defpoll song_album :interval "2s" "playerctl metadata album 2>/dev/null || echo '---'")
+(defpoll song_status :interval "1s" "playerctl status 2>/dev/null || echo 'Paused'")
+(defpoll song_art :interval "3s" "playerctl metadata mpris:artUrl 2>/dev/null | sed 's|file://||' || echo ''")
+(defpoll song_pos :interval "1s" "playerctl position --format '{{ duration(position) }}' 2>/dev/null || echo '0:00'")
+(defpoll song_len :interval "3s" "playerctl metadata --format '{{ duration(mpris:length) }}' 2>/dev/null || echo '0:00'")
+(defpoll weather_temp :interval "900s" "curl -sf 'wttr.in/?format=%t' 2>/dev/null || echo '26°C'")
+(defpoll weather_desc :interval "900s" "curl -sf 'wttr.in/?format=%C' 2>/dev/null || echo 'Clear'")
+
+(defwindow shinobi_dash
+  :monitor 0
+  :geometry (geometry :x "0px" :y "0px" :width "760px" :height "470px" :anchor "center")
+  :stacking "overlay"
+  :focusable false
+  (box :class "dash-root" :orientation "v" :space-evenly false :spacing 12
+    (box :class "dash-tabs" :orientation "h" :space-evenly true
+      (button :class {active_tab == "dashboard" ? "tab active" : "tab"}
+              :onclick "eww -c ~/.config/eww update active_tab=dashboard"
+              "󰕮  Dashboard")
+      (button :class {active_tab == "media" ? "tab active" : "tab"}
+              :onclick "eww -c ~/.config/eww update active_tab=media"
+              "󰎈  Media")
+      (button :class {active_tab == "perf" ? "tab active" : "tab"}
+              :onclick "eww -c ~/.config/eww update active_tab=perf"
+              "󰓅  Performance")
+      (button :class {active_tab == "weather" ? "tab active" : "tab"}
+              :onclick "eww -c ~/.config/eww update active_tab=weather"
+              "󰖐  Weather"))
+
+    (box :visible {active_tab == "dashboard"} :orientation "v" :space-evenly false :spacing 12 :vexpand true
+      (box :orientation "h" :space-evenly false :spacing 12
+        (box :class "card weather-card" :orientation "h" :space-evenly false :spacing 14
+          (label :class "weather-icon" :text "󰖙")
+          (box :orientation "v" :valign "center" :space-evenly false
+            (label :class "weather-temp" :text weather_temp)
+            (label :class "weather-desc" :text weather_desc)))
+        (box :class "card sys-card" :orientation "h" :space-evenly false :spacing 14 :hexpand true
+          (box :class "avatar-box" (label :class "avatar-glyph" :text "󰣇"))
+          (box :orientation "v" :valign "center" :space-evenly false :spacing 6
+            (label :class "sys-line accent" :halign "start" :text "  Arch Linux")
+            (label :class "sys-line" :halign "start" :text "  Hyprland")
+            (label :class "sys-line dim" :halign "start" :text "󰥔  up ${uptime_str}"))))
+
+      (box :orientation "h" :space-evenly false :spacing 12 :vexpand true
+        (box :class "card clock-card" :orientation "v" :valign "fill" :space-evenly true
+          (label :class "clock-num" :text hour)
+          (label :class "clock-dots" :text "•••")
+          (label :class "clock-num" :text minute))
+        (box :class "card cal-card" :orientation "v" :hexpand true
+          (calendar :class "cal-widget" :show-details true :show-heading true :show-day-names true))
+        (box :class "card bars-card" :orientation "h" :space-evenly true :spacing 10
+          (box :orientation "v" :space-evenly false :spacing 6
+            (scale :class "vbar bar1" :orientation "v" :flipped true :min 0 :max 100 :value cpu_val :vexpand true)
+            (label :class "bar-ico" :text ""))
+          (box :orientation "v" :space-evenly false :spacing 6
+            (scale :class "vbar bar2" :orientation "v" :flipped true :min 0 :max 100 :value ram_val :vexpand true)
+            (label :class "bar-ico" :text ""))
+          (box :orientation "v" :space-evenly false :spacing 6
+            (scale :class "vbar bar3" :orientation "v" :flipped true :min 0 :max 100 :value vol_val :vexpand true)
+            (label :class "bar-ico" :text "󰕾")))
+        (box :class "card media-card" :orientation "v" :space-evenly false :spacing 8
+          (box :class "album-art" :style "background-image: url('${song_art}');")
+          (label :class "song-title" :limit-width 16 :text song_title)
+          (label :class "song-artist" :limit-width 18 :text song_artist)
+          (box :class "media-controls" :orientation "h" :space-evenly true
+            (button :onclick "playerctl previous" "󰒮")
+            (button :onclick "playerctl play-pause" {song_status == "Playing" ? "󰏤" : "󰐊"})
+            (button :onclick "playerctl next" "󰒭")))))
+
+    (box :visible {active_tab == "media"} :class "card" :orientation "h" :space-evenly false :spacing 24 :vexpand true
+      (box :class "album-art-lg" :valign "center" :style "background-image: url('${song_art}');")
+      (box :orientation "v" :valign "center" :hexpand true :space-evenly false :spacing 10
+        (label :class "song-title-lg" :halign "start" :limit-width 28 :text song_title)
+        (label :class "song-artist" :halign "start" :limit-width 32 :text "${song_artist} • ${song_album}")
+        (box :orientation "h" :space-evenly true :spacing 16
+          (label :class "sys-line dim" :halign "start" :text song_pos)
+          (label :class "sys-line dim" :halign "end" :text song_len))
+        (box :class "media-controls-lg" :orientation "h" :space-evenly true
+          (button :onclick "playerctl shuffle Toggle" "")
+          (button :onclick "playerctl previous" "󰒮")
+          (button :class "play-pill" :onclick "playerctl play-pause" {song_status == "Playing" ? "󰏤" : "󰐊"})
+          (button :onclick "playerctl next" "󰒭")
+          (button :onclick "playerctl loop Track" "󰑖"))))
+
+    (box :visible {active_tab == "perf"} :class "card" :orientation "h" :space-evenly true :spacing 20 :vexpand true
+      (box :orientation "v" :space-evenly false :spacing 10
+        (label :class "sys-line accent" :text "  CPU: ${cpu_val}%")
+        (scale :class "vbar bar1" :orientation "v" :flipped true :min 0 :max 100 :value cpu_val :vexpand true))
+      (box :orientation "v" :space-evenly false :spacing 10
+        (label :class "sys-line accent" :text "  RAM: ${ram_val}%")
+        (scale :class "vbar bar2" :orientation "v" :flipped true :min 0 :max 100 :value ram_val :vexpand true))
+      (box :orientation "v" :space-evenly false :spacing 10
+        (label :class "sys-line accent" :text "󰕾  Audio: ${vol_val}%")
+        (scale :class "vbar bar3" :orientation "v" :flipped true :min 0 :max 100 :value vol_val :vexpand true)))
+
+    (box :visible {active_tab == "weather"} :class "card" :orientation "v" :valign "center" :vexpand true :spacing 12
+      (label :class "weather-icon" :text "󰖙")
+      (label :class "weather-temp" :text weather_temp)
+      (label :class "weather-desc" :text weather_desc))))
