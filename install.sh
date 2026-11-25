@@ -14,7 +14,7 @@ if command -v pacman >/dev/null 2>&1; then
     sudo pacman -Syu --noconfirm
     sudo pacman -S --noconfirm --needed \
         git base-devel hyprland waybar playerctl pavucontrol kitty rofi-wayland swaybg awww \
-        hyprlock swaylock starship fastfetch zsh zsh-autosuggestions zsh-syntax-highlighting yazi \
+        hyprlock  starship fastfetch zsh zsh-autosuggestions zsh-syntax-highlighting yazi \
         grim slurp wl-clipboard libnotify dunst \
         pipewire pipewire-pulse wireplumber pavucontrol \
         ttf-jetbrains-mono-nerd noto-fonts-emoji papirus-icon-theme \
@@ -41,7 +41,7 @@ mkdir -p \
 [ -d "$REPO_DIR/rofi" ] && cp -rf "$REPO_DIR/rofi/"* "$HOME/.config/rofi/"
 [ -d "$REPO_DIR/fastfetch" ] && cp -rf "$REPO_DIR/fastfetch/"* "$HOME/.config/fastfetch/"
 [ -d "$REPO_DIR/starship" ] && cp -rf "$REPO_DIR/starship/"* "$HOME/.config/starship-themes/"
-[ -d "$REPO_DIR/swaylock-themes" ] && cp -rf "$REPO_DIR/swaylock-themes" "$HOME/.config/"
+[ -d "$REPO_DIR/-themes" ] && cp -rf "$REPO_DIR/-themes" "$HOME/.config/"
 [ -f "$REPO_DIR/zsh/.zshrc" ] && cp -f "$REPO_DIR/zsh/.zshrc" "$HOME/.zshrc"
 
 # 4. Instalar scripts y wallpapers
@@ -197,19 +197,19 @@ if [ -d "$REPO_DIR/swaync" ]; then
     mkdir -p "$HOME/.config/swaync"
     cp -rf "$REPO_DIR/swaync/"* "$HOME/.config/swaync/"
 fi
-# Instalar swaylock-effects para pantalla de bloqueo dinamica
+# Instalar -effects para pantalla de bloqueo dinamica
 # --- SHINOBI-LOCK DYNAMIC SCREEN LOCK ---
 echo "[*] Configurando pantalla de bloqueo dinamica (shinobi-lock)..."
 
-# 1. Instalar swaylock-effects reemplazando swaylock base sin bloqueo interactivo
-if ! pacman -Qi swaylock-effects >/dev/null 2>&1; then
-    if pacman -Qi swaylock >/dev/null 2>&1; then
-        sudo pacman -Rdd --noconfirm swaylock 2>/dev/null || true
+# 1. Instalar -effects reemplazando  base sin bloqueo interactivo
+if ! pacman -Qi -effects >/dev/null 2>&1; then
+    if pacman -Qi  >/dev/null 2>&1; then
+        sudo pacman -Rdd --noconfirm  2>/dev/null || true
     fi
     if command -v yay >/dev/null 2>&1; then
-        yay -S --noconfirm --answerdiff None --answerclean None swaylock-effects
+        yay -S --noconfirm --answerdiff None --answerclean None -effects
     elif command -v paru >/dev/null 2>&1; then
-        paru -S --noconfirm swaylock-effects
+        paru -S --noconfirm -effects
     fi
 fi
 
