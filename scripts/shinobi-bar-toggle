@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-
-if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ] && [ -d "$XDG_RUNTIME_DIR/hypr" ]; then
-    INST=$(ls -t "$XDG_RUNTIME_DIR/hypr" 2>/dev/null | head -n 1)
-    [ -n "$INST" ] && export HYPRLAND_INSTANCE_SIGNATURE="$INST"
-fi
-
 if [ -z "$WAYLAND_DISPLAY" ]; then
     SOCK=$(ls "$XDG_RUNTIME_DIR"/wayland-* 2>/dev/null | grep -v '\.lock$' | head -n 1)
     [ -n "$SOCK" ] && export WAYLAND_DISPLAY=$(basename "$SOCK")
@@ -29,13 +23,7 @@ pkill -x waybar 2>/dev/null || true
 while pgrep -x waybar >/dev/null 2>&1; do sleep 0.05; done
 
 if [ "$MODE" = "left" ]; then
-    CMD="waybar -c $HOME/.config/waybar/config-vertical.jsonc -s $HOME/.config/waybar/style-vertical.css"
+    setsid -f waybar -c "$HOME/.config/waybar/config-vertical.jsonc" -s "$HOME/.config/waybar/style-vertical.css" >/dev/null 2>&1
 else
-    CMD="waybar -c $HOME/.config/waybar/config.jsonc -s $HOME/.config/waybar/style.css"
-fi
-
-if command -v hyprctl >/dev/null 2>&1 && [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
-    hyprctl dispatch exec "$CMD" >/dev/null 2>&1
-else
-    setsid -f $CMD >/tmp/waybar-toggle.log 2>&1
+    setsid -f waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" >/dev/null 2>&1
 fi
