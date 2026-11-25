@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CSS="$HOME/.config/waybar/colors-wallust.css"
+OUT_DIR="$HOME/.config/wlogout/icons"
+SRC_DIR="/usr/share/wlogout/icons"
+[ -d "$SRC_DIR" ] || SRC_DIR="/usr/local/share/wlogout/icons"
+
+mkdir -p "$OUT_DIR"
+
+FG=$(grep -E '@define-color\s+fg\b' "$CSS" 2>/dev/null | awk '{print $3}' | tr -d ';')
+BORDER=$(grep -E '@define-color\s+border\b' "$CSS" 2>/dev/null | awk '{print $3}' | tr -d ';')
+[ -n "$FG" ] || FG="#f8fafc"
+[ -n "$BORDER" ] || BORDER="#38bdf8"
+
+python3 - "$SRC_DIR" "$OUT_DIR" "$FG" "$BORDER" << 'PY'
+import sys, pathlib
+src, out, fg_hex, bd_hex = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3].lstrip("#"), sys.argv[4].lstrip("#")
+fg_rgb = tuple(int(fg_hex[i:i+2], 16) for i in (0, 2, 4))
+bd_rgb = tuple(int(bd_hex[i:i+2], 16) for i in (0, 2, 4))
+
+try:
+    from PIL import Image
+except ImportError:
+    import shutil
+    for name in ("lock", "logout", "suspend", "hibernate", "reboot", "shutdown"):
+        p = src / f"{name}.png"
+        if p.exists():
+            shutil.copy2(p, out / f"{name}.png")
+            shutil.copy2(p, out / f"{name}-hover.png")
+    sys.exit(0)
+
+for name in ("lock", "logout", "suspend", "hibernate", "reboot", "shutdown"):
+    p = src / f"{name}.png"
+    if not p.exists():
+        continue
+    im = Image.open(p).convert("RGBA")
+    alpha = im.split()[3]
+    for suffix, rgb in (("", fg_rgb), ("-hover", bd_rgb)):
+        colored = Image.new("RGBA", im.size, rgb + (255,))
+        colored.putalpha(alpha)
+        colored.save(out / f"{name}{suffix}.png")
+PY

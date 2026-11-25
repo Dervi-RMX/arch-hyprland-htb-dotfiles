@@ -195,6 +195,55 @@ if [ -d "$REPO_DIR/swaync" ]; then
     cp -rf "$REPO_DIR/swaync/"* "$HOME/.config/swaync/"
 fi
 # Instalar swaylock-effects para pantalla de bloqueo dinamica
-if command -v yay >/dev/null 2>&1; then
-    yay -S --noconfirm --answerdiff None --answerclean None swaylock-effects 2>/dev/null || true
+# --- SHINOBI-LOCK DYNAMIC SCREEN LOCK ---
+echo "[*] Configurando pantalla de bloqueo dinamica (shinobi-lock)..."
+
+# 1. Instalar swaylock-effects reemplazando swaylock base sin bloqueo interactivo
+if ! pacman -Qi swaylock-effects >/dev/null 2>&1; then
+    if pacman -Qi swaylock >/dev/null 2>&1; then
+        sudo pacman -Rdd --noconfirm swaylock 2>/dev/null || true
+    fi
+    if command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm --answerdiff None --answerclean None swaylock-effects
+    elif command -v paru >/dev/null 2>&1; then
+        paru -S --noconfirm swaylock-effects
+    fi
+fi
+
+# 2. Copiar ejecutable shinobi-lock y configuracion hyprland.lua
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "$HOME/.local/bin" "$HOME/.config/hypr"
+if [ -f "$SCRIPT_DIR/scripts/shinobi-lock" ]; then
+    cp -f "$SCRIPT_DIR/scripts/shinobi-lock" "$HOME/.local/bin/shinobi-lock"
+    chmod +x "$HOME/.local/bin/shinobi-lock"
+fi
+if [ -f "$SCRIPT_DIR/hypr/hyprland.lua" ]; then
+    cp -f "$SCRIPT_DIR/hypr/hyprland.lua" "$HOME/.config/hypr/hyprland.lua"
+fi
+# --- WLOGOUT SESSION MENU ---
+echo "[*] Instalando y configurando menu de sesion wlogout..."
+
+# 1. Instalar wlogout desde repositorios oficiales o AUR
+if ! command -v wlogout >/dev/null 2>&1; then
+    if sudo pacman -S --noconfirm wlogout 2>/dev/null; then
+        true
+    elif command -v yay >/dev/null 2>&1; then
+        yay -S --noconfirm --answerdiff None --answerclean None wlogout
+    elif command -v paru >/dev/null 2>&1; then
+        paru -S --noconfirm wlogout
+    fi
+fi
+
+# 2. Copiar layout y estilo dinamico de wlogout al perfil del usuario
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "$HOME/.config/wlogout"
+if [ -d "$SCRIPT_DIR/wlogout" ]; then
+    cp -rf "$SCRIPT_DIR/wlogout/"* "$HOME/.config/wlogout/"
+fi
+# Generar iconos dinamicos de wlogout segun entorno
+sudo pacman -S --noconfirm --needed python-pillow 2>/dev/null || true
+if [ -f "$SCRIPT_DIR/scripts/shinobi-wlogout-icons" ]; then
+    cp -f "$SCRIPT_DIR/scripts/shinobi-wlogout-icons" "$HOME/.local/bin/shinobi-wlogout-icons"
+    chmod +x "$HOME/.local/bin/shinobi-wlogout-icons"
+    "$HOME/.local/bin/shinobi-wlogout-icons" 2>/dev/null || true
 fi

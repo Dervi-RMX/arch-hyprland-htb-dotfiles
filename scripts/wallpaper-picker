@@ -142,3 +142,4 @@ fi
 
 # command -v notify-send >/dev/null 2>&1 && notify-send -t 1500 "Entorno: $SCHEME" "Cursor: $CURSOR | UI sincronizada"
 command -v swaync-client >/dev/null 2>&1 && swaync-client -rs >/dev/null 2>&1 || true
+"$HOME/.local/bin/shinobi-wlogout-icons" 2>/dev/null || true
