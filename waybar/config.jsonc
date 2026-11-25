@@ -32,7 +32,7 @@
     ],
     "custom/launcher": {
         "format": "󰣇",
-        "on-click": "/home/dervi/.local/bin/shinobi-dashboard-toggle",
+        "on-click": "$HOME/.local/bin/shinobi-dashboard-toggle",
         "tooltip": true,
         "tooltip-format": "Aplicaciones (Rofi)",
         "on-click-right": "rofi -show drun"
