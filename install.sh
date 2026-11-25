@@ -47,6 +47,9 @@ mkdir -p \
 # 4. Instalar scripts y wallpapers
 if [ -d "$REPO_DIR/scripts" ]; then
     cp -rf "$REPO_DIR/scripts/"* "$HOME/.local/bin/"
+mkdir -p "$HOME/.config/Code/User"
+cp -f "$REPO_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
+cp -f "$REPO_DIR/vscode/code-flags.conf" "$HOME/.config/code-flags.conf"
     chmod +x "$HOME/.local/bin/"*
 fi
 [ -d "$REPO_DIR/assets/wallpapers" ] && cp -rf "$REPO_DIR/assets/wallpapers/"* "$HOME/Pictures/Wallpapers/"
@@ -284,3 +287,4 @@ cp -f "${REPO_DIR:-$SCRIPT_DIR}/scripts/"* "$HOME/.local/bin/" 2>/dev/null || tr
 chmod +x "$HOME/.local/bin/"*
 [ ! -f "$HOME/.cache/shinobi-bar-mode" ] && echo "left" > "$HOME/.cache/shinobi-bar-mode"
 "$HOME/.local/bin/shinobi-dashboard-toggle" --sync-only 2>/dev/null || true
+"$HOME/.local/bin/shinobi-vscode-sync" 2>/dev/null || true
