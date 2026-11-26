@@ -25,7 +25,7 @@ PKGS=(
     noto-fonts-emoji papirus-icon-theme libayatana-appindicator
     polkit-gnome xdg-desktop-portal-hyprland openvpn networkmanager
     firefox spotify-launcher xdg-utils unzip sddm qt6-5compat qt6-svg qt6-virtualkeyboard
-    qt6-multimedia-ffmpeg python python-pillow jq curl wget
+    qt6-multimedia-ffmpeg python python-pillow python-requests jq curl wget
 )
 
 echo "[*] Instalando dependencias base del sistema..."
@@ -74,6 +74,8 @@ mkdir -p "$HOME/.config/hypr" "$HOME/.config/waybar" "$HOME/.config/eww" \
 
 find "$HOME/.config/waybar" "$HOME/.config/eww" "$HOME/.config/hypr" "$HOME/.config/wlogout" -type f -exec sed -i "s|\\\$HOME|$HOME|g" {} +
 chmod +x "$HOME/.local/bin/"*
+find "$HOME/.config/eww" -type f \( -name "*.sh" -o -name "*.py" -o -path "*/scripts/*" \) -exec chmod +x {} + 2>/dev/null || true
+eww reload >/dev/null 2>&1 || true
 sudo ln -sf "$HOME/.local/bin/spotify" /usr/local/bin/spotify
 mkdir -p "$HOME/.local/share/applications"
 for f in spotify.desktop spotify-launcher.desktop; do
