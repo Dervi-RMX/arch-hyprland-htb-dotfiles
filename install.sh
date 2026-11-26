@@ -73,6 +73,8 @@ mkdir -p "$HOME/.config/hypr" "$HOME/.config/waybar" "$HOME/.config/eww" \
 [ -f "$REPO_DIR/vscode/code-flags.conf" ] && cp -f "$REPO_DIR/vscode/code-flags.conf" "$HOME/.config/code-flags.conf"
 
 find "$HOME/.config/waybar" "$HOME/.config/eww" "$HOME/.config/hypr" "$HOME/.config/wlogout" -type f -exec sed -i "s|\\\$HOME|$HOME|g" {} +
+rm -rf "$HOME/.config/kitty" && mkdir -p "$HOME/.config/kitty"
+cp -rf "$REPO_DIR/kitty/"* "$HOME/.config/kitty/" 2>/dev/null || true
 chmod +x "$HOME/.local/bin/"*
 find "$HOME/.config/eww" -type f \( -name "*.sh" -o -name "*.py" -o -path "*/scripts/*" \) -exec chmod +x {} + 2>/dev/null || true
 eww kill >/dev/null 2>&1 || true
