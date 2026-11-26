@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+if os.popen("playerctl status 2>/dev/null").read().strip() != "Playing": raise SystemExit(0)
 import hashlib, json, pathlib, re, subprocess, urllib.parse, urllib.request
 
 def run(cmd):

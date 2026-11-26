@@ -24,7 +24,7 @@ PKGS=(
     pipewire pipewire-pulse wireplumber ttf-jetbrains-mono-nerd
     noto-fonts-emoji papirus-icon-theme libayatana-appindicator
     polkit-gnome xdg-desktop-portal-hyprland openvpn networkmanager
-    firefox spotify-launcher xdg-utils unzip sddm qt6-5compat qt6-svg qt6-virtualkeyboard
+    firefox zram-generator spotify-launcher xdg-utils unzip sddm qt6-5compat qt6-svg qt6-virtualkeyboard
     qt6-multimedia-ffmpeg python python-pillow python-requests jq curl wget
 )
 
@@ -103,7 +103,12 @@ if [ -n "$WAYLAND_DISPLAY" ]; then
 if systemd-detect-virt -q 2>/dev/null; then
     grep -q "vm-performance.conf" "$HOME/.config/hypr/hyprland.conf" || echo "source = ~/.config/hypr/vm-performance.conf" >> "$HOME/.config/hypr/hyprland.conf"
 fi
-    hyprctl reload >/dev/null 2>&1 || true
+    
+printf "[zram0]\nzram-size = ram / 2\ncompression-algorithm = zstd\nswap-priority = 100\n" | sudo tee /etc/systemd/zram-generator.conf >/dev/null
+printf "vm.swappiness=100\nvm.vfs_cache_pressure=50\nvm.page-cluster=0\n" | sudo tee /etc/sysctl.d/99-shinobi-fast.conf >/dev/null
+sudo systemctl daemon-reload && sudo systemctl start /dev/zram0 2>/dev/null || true
+sudo sysctl --system >/dev/null 2>&1 || true
+hyprctl reload >/dev/null 2>&1 || true
     killall waybar >/dev/null 2>&1 || true
     nohup waybar >/dev/null 2>&1 &
     disown
