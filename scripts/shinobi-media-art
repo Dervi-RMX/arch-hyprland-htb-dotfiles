@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-URL=$(playerctl metadata mpris:artUrl 2>/dev/null)
+URL=$(playerctl metadata mpris:artUrl 2>/dev/null | head -n 1)
 [ -z "$URL" ] && exit 0
 if [[ "$URL" == file://* ]]; then
     echo "${URL#file://}"
     exit 0
 fi
+URL="${URL/open.spotify.com\/image\//i.scdn.co\/image\/}"
 HASH=$(printf '%s' "$URL" | md5sum | awk '{print $1}')
 IMG="/tmp/shinobi-cover-${HASH}.jpg"
 if [ ! -s "$IMG" ]; then
     rm -f /tmp/shinobi-cover-*.jpg 2>/dev/null
-    curl -fsSL --max-time 4 "$URL" -o "$IMG" 2>/dev/null || exit 0
+    curl -fsSL -A "Mozilla/5.0" --max-time 5 "$URL" -o "$IMG" 2>/dev/null || exit 0
 fi
 echo "$IMG"

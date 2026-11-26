@@ -75,7 +75,8 @@ mkdir -p "$HOME/.config/hypr" "$HOME/.config/waybar" "$HOME/.config/eww" \
 find "$HOME/.config/waybar" "$HOME/.config/eww" "$HOME/.config/hypr" "$HOME/.config/wlogout" -type f -exec sed -i "s|\\\$HOME|$HOME|g" {} +
 chmod +x "$HOME/.local/bin/"*
 find "$HOME/.config/eww" -type f \( -name "*.sh" -o -name "*.py" -o -path "*/scripts/*" \) -exec chmod +x {} + 2>/dev/null || true
-eww reload >/dev/null 2>&1 || true
+eww kill >/dev/null 2>&1 || true
+nohup eww daemon >/dev/null 2>&1 & disown
 sudo ln -sf "$HOME/.local/bin/spotify" /usr/local/bin/spotify
 mkdir -p "$HOME/.local/share/applications"
 for f in spotify.desktop spotify-launcher.desktop; do

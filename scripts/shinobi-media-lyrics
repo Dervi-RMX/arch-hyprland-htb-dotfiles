@@ -11,48 +11,46 @@ meta = run(["playerctl", "metadata", "--format", "{{artist}}|||{{title}}"])
 if not meta or "|||" not in meta:
     raise SystemExit(0)
 artist, title = [x.strip() for x in meta.split("|||", 1)]
-if not title:
-    raise SystemExit(0)
+main_artist = artist.split(",")[0].strip()
+pos = float(run(["playerctl", "position"]) or 0.0)
 
-pos_str = run(["playerctl", "position"])
-pos = float(pos_str) if pos_str else 0.0
-
-key = hashlib.md5(f"{artist}|{title}".lower().encode()).hexdigest()
+key = hashlib.md5(f"{main_artist}|{title}".lower().encode()).hexdigest()
 cache = pathlib.Path(f"/tmp/shinobi-lyrics-{key}.json")
 
 if not cache.exists():
     data = {}
     hdrs = {"User-Agent": "ShinobiHypr/1.0"}
-    q = urllib.parse.urlencode({"artist_name": artist, "track_name": title})
-    try:
-        req = urllib.request.Request(f"https://lrclib.net/api/get?{q}", headers=hdrs)
-        with urllib.request.urlopen(req, timeout=3) as r:
-            data = json.loads(r.read().decode())
-    except Exception:
+    for url in [
+        f"https://lrclib.net/api/get?{urllib.parse.urlencode({'artist_name': main_artist, 'track_name': title})}",
+        f"https://lrclib.net/api/search?{urllib.parse.urlencode({'q': f'{main_artist} {title}'})}",
+    ]:
         try:
-            sq = urllib.parse.urlencode({"q": f"{artist} {title}"})
-            req = urllib.request.Request(f"https://lrclib.net/api/search?{sq}", headers=hdrs)
-            with urllib.request.urlopen(req, timeout=3) as r:
-                items = json.loads(r.read().decode())
-                if items:
-                    data = next((i for i in items if i.get("syncedLyrics")), items[0])
+            with urllib.request.urlopen(urllib.request.Request(url, headers=hdrs), timeout=4) as r:
+                res = json.loads(r.read().decode())
+                if isinstance(res, list) and res:
+                    data = next((i for i in res if i.get("syncedLyrics")), res[0])
+                elif isinstance(res, dict) and (res.get("syncedLyrics") or res.get("plainLyrics")):
+                    data = res
+                if data:
+                    break
         except Exception:
-            data = {}
+            pass
     cache.write_text(json.dumps(data))
 else:
     data = json.loads(cache.read_text())
 
 synced = data.get("syncedLyrics") or ""
-if not synced:
-    raise SystemExit(0)
+if synced:
+    cur = ""
+    for m in re.finditer(r"\[(\d+):(\d+(?:\.\d+)?)\]\s*(.*)", synced):
+        if int(m.group(1)) * 60 + float(m.group(2)) <= pos + 0.5:
+            cur = m.group(3).strip()
+        else:
+            break
+    if cur:
+        print(f"󰎈  {cur}")
+        raise SystemExit(0)
 
-current = ""
-for m in re.finditer(r"\[(\d+):(\d+(?:\.\d+)?)\]\s*(.*)", synced):
-    ts = int(m.group(1)) * 60 + float(m.group(2))
-    if ts <= pos + 0.4:
-        current = m.group(3).strip()
-    else:
-        break
-
-if current:
-    print(f"󰎈  {current}")
+plain = (data.get("plainLyrics") or "").strip().splitlines()
+if plain:
+    print(f"󰎈  {plain[0].strip()}")
